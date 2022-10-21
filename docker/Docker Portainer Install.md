@@ -30,8 +30,9 @@ volumes:
 Los archivos ca.key y ca.crt se encuentran en esa ruta por ser el mismo docker server donde se instalo Harbor
 
 **Iniciar el contenedor**
+```
 	sudo docker-compose -f portainer.yml up -d
-	
+```
 **Configuracion de integracion con ldap**
 ```
 LDAP Server: 10.1.1.13:369
