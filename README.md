@@ -1,2 +1,2 @@
-# KBase
-Base de datos de conocimiento
+# Pelo-K-Base
+Base de datos de conocimiento historica
