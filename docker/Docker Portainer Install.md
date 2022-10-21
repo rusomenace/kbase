@@ -31,7 +31,7 @@ Los archivos ca.key y ca.crt se encuentran en esa ruta por ser el mismo docker s
 
 **Iniciar el contenedor**
 ```
-	sudo docker-compose -f portainer.yml up -d
+sudo docker-compose -f portainer.yml up -d
 ```
 **Configuracion de integracion con ldap**
 ```
