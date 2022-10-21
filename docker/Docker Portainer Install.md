@@ -1,4 +1,6 @@
-### Descargar la ultima version de portainer
+## Guia de instalacion de portainer
+
+**Descargar la ultima version de portainer**
 ```
 docker pull portainer/portainer:latest
 ```
@@ -27,14 +29,15 @@ volumes:
 ```
 Los archivos ca.key y ca.crt se encuentran en esa ruta por ser el mismo docker server donde se instalo Harbor
 
-### Iniciar el contenedor
+**Iniciar el contenedor**
 	sudo docker-compose -f portainer.yml up -d
 	
-### Configuracion de integracion con ldap
-
+**Configuracion de integracion con ldap**
+```
 LDAP Server: 10.1.1.13:369
 Reader DN: CN=Administrator,CN=Builtin,DC=tq,DC=com,DC=ar
 Base DN: OU=site0,OU=arg,DC=tq,DC=com,DC=ar
 Username Attribute: userPrincipalName
 Group Base DN: OU=groups,OU=site0,OU=arg,DC=tq,DC=com,DC=ar
 Group Membership Attribute: member
+```
