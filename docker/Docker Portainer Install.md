@@ -1,9 +1,9 @@
 ### Descargar la ultima version de portainer
 ```
 docker pull portainer/portainer:latest
-
-#Crear un archivo portainer.yml y colocar lo siguiente
-
+```
+### Crear un archivo portainer.yml y colocar lo siguiente
+```
 version: '2'
 
 services:
