@@ -1,0 +1,7 @@
+Use ePO_TQARSVW16EPO01
+GO
+
+DROP INDEX IX_EPOProductEvents_AgentGuid
+ON EPOProductEventsMT
+
+GO

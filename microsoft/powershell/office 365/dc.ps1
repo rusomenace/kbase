@@ -1,0 +1,1 @@
+Get-PSSession | Remove-PSSession

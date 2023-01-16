@@ -1,0 +1,1 @@
+@('tqarsvw19sql01', 'tqarsvw19sql02', 'tqarsvw16sql01', 'tqarsvw16sql02', 'tqarsvw16epo01', 'tqarsvw16ap03', 'tqarsvw22wsus01') | % { Get-SqlInstance -ServerInstance $_}

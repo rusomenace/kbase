@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: always
+    ports:
+      - 9000:9443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+      - /etc/docker/certs.d/tqcorp.com:/certs
+    command:
+            --ssl
+            --sslcert /certs/ca.crt
+            --sslkey /certs/ca.key
+volumes:
+  portainer_data:

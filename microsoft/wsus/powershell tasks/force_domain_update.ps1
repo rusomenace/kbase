@@ -1,0 +1,1 @@
+$Computers=Get-ADComputer -Filter 'Name -Like "TQAR*"'; ForEach ($computer in $computers) {echo $computer.Name; Invoke-Command -ComputerName $computer.Name -ScriptBlock {cmd /C wuauclt /detectnow} ;Invoke-Command -ComputerName $computer.Name -ScriptBlock {cmd /C wuauclt /reportnow} }

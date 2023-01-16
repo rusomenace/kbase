@@ -1,0 +1,14 @@
+https://portal.broadcom.com/group/licensing
+
+Trasanction Key: E4AE96C06D05FED80D05D2
+
+wwn: 10:00:d8:1f:cc:16:fe:c8
+
+Activation Key: E4AE96C06D05FED80D05D2
+
+SKU: IB-SMED8PTPOD-01	
+
+License Key: NSSYfGMTMaaYAaB7M3FDfYPtL9atYN7SMLMFYHEA7ZJA
+
+En CLI
+IBM_8960_F24:admin> licenseadd NSSYfGMTMaaYAaB7M3FDfYPtL9atYN7SMLMFYHEA7ZJA

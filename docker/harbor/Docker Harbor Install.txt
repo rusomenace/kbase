@@ -1,0 +1,105 @@
+#Instalacion regular de Ubuntu 20
+
+#Guia de instalacion docker oficial
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+#Guia de instalacion docker-compose oficial
+https://docs.docker.com/compose/install/
+
+#Instalar herramientas de red y ctop
+	sudo apt install net-tools
+	sudo apt install ctop
+	
+#Actualizacion
+	sudo apt update && sudo apt upgrade -y
+
+#Verificar version de docker y compose
+	sudo docker system info
+	sudo docker-compose version
+	
+#Enabling Docker Remote API ( for Ubuntu 16-20 insecure)
+	sudo nano /lib/systemd/system/docker.service
+		Reemplazar por ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375 --containerd=/run/containerd/containerd.sock
+
+#Docker service restart
+	sudo systemctl daemon-reload
+	sudo systemctl restart docker
+
+#Crear usuario de ejecucion de docker con permisos sudo
+	sudo adduser dockeruser
+	
+#Use the usermod command to add the user to the sudo group.
+	sudo usermod -aG sudo dockeruser
+	
+#Crear el grupo docker (si no existe)
+	sudo groupadd docker
+
+#Add your user to the docker group.
+	sudo usermod -aG docker dockeruser
+	
+#Cambiar de usuario
+	su - dockeruser
+	
+#Crear las siguiente carpeta
+/etc/docker/certs.d/tqcorp.com
+
+	sudo mkdir /etc/docker/certs.d
+	sudo mkdir /etc/docker/certs.d/tqcorp.com
+	
+#Conectarse remotamente por WinSCP y depositar los siguiente archivos en la carpeta /etc/docker/certs.d/tqcorp.com
+ca.crt
+ca.key
+Los archivos corresponden al crt de cadena completa de tqcorp.com y el key descargados de la entidad certificadora
+Por cuestiones de permisos copiarlos a tmp y moverlos manualmente
+	sudo mv *.crt *.key /etc/docker/certs.d/tqcorp.com
+
+#Descarga del paquete mas actualizado de Harbor
+https://github.com/goharbor/harbor/releases (version 2 en adelante)
+	wget https://github.com/goharbor/harbor/releases/download/v2.0.1/harbor-offline-installer-v2.0.1.tgz
+
+#Unpack
+	tar xvzf harbor-offline-installer-v2.0.1.tgz
+	
+#Dentro de la carpeta harbor realizar copia del archivo harbor.yml.tmp1
+	sudo cp harbor.yml.tmpl harbor.yml
+	
+#Editar archivo harbor.yml
+	sudo nano harbor.yml
+	
+#Cambiar los valores siguientes
+
+ hostname: registry2.tqcorp.com
+
+ certificate: /etc/docker/certs.d/tqcorp.com/ca.crt
+ private_key: /etc/docker/certs.d/tqcorp.com/ca.key
+
+#Cambiar el hostname
+	sudo nano /etc/hostname
+
+registry2.tqcorp.com #reemplazar lo que exista por esto
+
+#Editar la lista de host y agregar valores estaticos
+	sudo nano /etc/hosts
+	
+10.1.1.8 registry2.tqcorp.com #agregar esta entrada a las existentes
+
+#sudo reboot
+
+#Instalar Harbor con notary y trivy
+	sudo ./install.sh --with-notary --with-trivy
+	
+#Post-Install
+Si se integra con LDAP no se debe crear ningun usuario local
+
+#Email
+email server: tqcorp-com.mail.protection.outlook.com
+
+#LDAP
+
+	ldap url: ldap://10.1.1.13
+	ldap search dn: tq\username
+	ldap base dn: OU=site0,OU=arg,DC=tq,DC=com,DC=ar
+	ldap ui: userPrincipalName
+	ldap group base dn: OU=groups,OU=site0,OU=arg,DC=tq,DC=com,DC=ar
+	ldap group admin dn: CN=Domain Admins,CN=Builtin,DC=tq,DC=com,DC=ar
+	

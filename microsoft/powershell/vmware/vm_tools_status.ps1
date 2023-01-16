@@ -1,0 +1,1 @@
+get-vm TQAR* | Select Name,@{Name="ToolsVersion";Expression={$_.ExtensionData.Guest.ToolsVersion}},@{Name="ToolsStatus";Expression={$_.ExtensionData.Guest.ToolsVersionStatus}} | Format-Table 

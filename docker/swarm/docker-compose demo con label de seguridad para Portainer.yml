@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+    bancorapi:
+        volumes:
+            - 'C:/Docker/Bancor/bancorapi/dataVolumen:c:/TeamQuality/logs'
+        container_name: bancorapi
+        ports:
+            - '8000:8000'
+        image: bancorapi:latest
+        labels:
+          - "io.portainer.accesscontrol.teams=QA"
+    bancorapiproxy:
+        ports:
+            - '8001:8001'
+        depends_on:
+          - "bancorapi"
+        container_name: bancorapiproxy
+        image: bancorapiproxy:latest
+        labels:
+          - "io.portainer.accesscontrol.teams=QA"

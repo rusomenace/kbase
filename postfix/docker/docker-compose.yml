@@ -1,0 +1,11 @@
+version: '2'
+services:
+  postfix:
+    image: postfix/postfix:latest
+    ports:
+      - "25:25"
+    env_file:
+      - /home/uroot/data/postfix/.env
+    restart: always
+    volumes:
+     - "/etc/localtime:/etc/localtime:ro"

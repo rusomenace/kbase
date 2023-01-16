@@ -1,0 +1,3 @@
+Copy-Item "C:\Tools\GPO Software Installation Powershell\java.ps1" -Destination "\\tq.com.ar\SYSVOL\tq.com.ar\Policies\{3DEBD773-228E-40B7-B000-176CFC9B9C6E}\Machine\Scripts\Startup"
+Copy-Item "C:\Tools\GPO Software Installation Powershell\java2.ps1" -Destination "\\tq.com.ar\SYSVOL\tq.com.ar\Policies\{3DEBD773-228E-40B7-B000-176CFC9B9C6E}\Machine\Scripts\Startup"
+Copy-Item "C:\Tools\GPO Software Installation Powershell\acrobat.ps1" -Destination "\\tq.com.ar\SYSVOL\tq.com.ar\Policies\{3DEBD773-228E-40B7-B000-176CFC9B9C6E}\Machine\Scripts\Startup"

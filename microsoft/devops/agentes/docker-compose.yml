@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+    dind01:
+        container_name: dind01
+        hostname: dind01
+        restart: unless-stopped
+        privileged: true
+        environment:
+            - DOCKER_TLS_CERTDIR=
+        image: 'docker:dind'
+    linuxagent01:
+        container_name: linuxagent01
+        hostname: linuxagent01
+        restart: unless-stopped
+        environment:
+            - AZP_URL=https://devops.tqcorp.com
+            - AZP_TOKEN=TokenDeApi
+            - AZP_AGENT_NAME=linuxagent01
+            - AZP_POOL=Pool-A
+            - AZP_WORK=_work
+            - DOCKER_HOST=tcp://dind01:2375
+        image: 'dockeragent:latest'
+        depends_on:
+          - dind01
+
+#Publica el sock de docker directamente al container, no usar es inseguro
+#        volumes:
+#          - './var/run/docker.sock:/var/run/docker.sock'
+#          - './usr/bin/docker:/usr/bin/docker'

@@ -1,0 +1,1 @@
+Disconnect-vIServer -Confirm:$false

@@ -1,0 +1,117 @@
+# Swarm multi OS
+
+## Tagear con un nombre cada nodo
+```
+docker node update --label-add os=windows nodename
+docker node update --label-add OS=linux nodename
+```
+
+## Create overlay network
+```
+docker network create -d overlay linknet
+```
+
+## Create node in linux
+```
+  # Backend DB container
+	docker service create --name db --endpoint-mode dnsrr --network linknet --constraint 'node.labels.os==linux' nginx:latest
+	# Frontend WEB containter
+	docker service create --name web --endpoint-mode dnsrr --publish mode=host,target=8000 --network linknet --constraint 'node.labels.os==windows' iis:latest
+```
+
+
+## Example
+```
+services:
+ 
+  redis:
+    image: redis:3.2-alpine
+    ports:
+      - "6379"
+    networks:
+      - voteapp
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+ 
+  db:
+    image: postgres:9.4
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - voteapp
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+ 
+  voting-app:
+    image: gaiadocker/example-voting-app-vote:good
+    ports:
+      - 5000:80
+    networks:
+      - voteapp
+    depends_on:
+      - redis
+    deploy:
+      mode: replicated
+      replicas: 2
+      labels: [APP=VOTING]
+      placement:
+        constraints: [node.role == worker]
+ 
+  result-app:
+    image: gaiadocker/example-voting-app-result:latest
+    ports:
+      - 5001:80
+    networks:
+      - voteapp
+    depends_on:
+      - db
+ 
+  worker:
+    image: gaiadocker/example-voting-app-worker:latest
+    networks:
+      voteapp:
+        aliases:
+          - workers
+    depends_on:
+      - db
+      - redis
+    # service deployment
+    deploy:
+      mode: replicated
+      replicas: 2
+      labels: [APP=VOTING]
+      # service resource management
+      resources:
+        # Hard limit - Docker does not allow to allocate more
+        limits:
+          cpus: '0.25'
+          memory: 512M
+        # Soft limit - Docker makes best effort to return to it
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      # service restart policy
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      # service update configuration
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 60s
+        max_failure_ratio: 0.3
+      # placement constraint - in this case on 'worker' nodes only
+      placement:
+        constraints: [node.role == worker]
+ 
+networks:
+    voteapp:
+ 
+volumes:
+  db-data:	
+```

@@ -1,0 +1,7 @@
+Use ePO_TQARSVW16EPO01
+GO
+
+ALTER INDEX PK_EPOProductEvents_AutoID
+	ON dbo.EPOProductEventsMT
+REORGANIZE ;
+GO

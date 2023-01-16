@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+# Docker in Docker
+    dind:
+        container_name: dind
+        hostname: dind
+        restart: unless-stopped
+        privileged: true
+        environment:
+            - DOCKER_TLS_CERTDIR=
+        image: 'docker:dind'
+# Agente 1
+    linuxagent01:
+        container_name: linuxagent01
+        hostname: linuxagent01
+        restart: unless-stopped
+        environment:
+            - AZP_URL=https://devops.tqcorp.com
+            - AZP_TOKEN=h4umbfdoqcymglteiq25ibdnkmqvvskpnby7h7bl3copxespl2na
+            - AZP_AGENT_NAME=linuxagent01
+            - AZP_POOL=Pool-A
+            - AZP_WORK=_work
+            - DOCKER_HOST=tcp://dind:2375
+        image: 'dockeragent:latest'
+        depends_on:
+          - dind
+# Agente 2
+    linuxagent02:
+        container_name: linuxagent02
+        hostname: linuxagent02
+        restart: unless-stopped
+        environment:
+            - AZP_URL=https://devops.tqcorp.com
+            - AZP_TOKEN=h4umbfdoqcymglteiq25ibdnkmqvvskpnby7h7bl3copxespl2na
+            - AZP_AGENT_NAME=linuxagent02
+            - AZP_POOL=Pool-A
+            - AZP_WORK=_work
+            - DOCKER_HOST=tcp://dind:2375
+        image: 'dockeragent:latest'
+        depends_on:
+          - dind

@@ -1,0 +1,12 @@
+### Full Powershell
+```
+Set-SendConnector -Identity "Clients" -AddressSpaces SMTP:"*.bnpparibas.com;1",SMTP:"bnpparibas.com.ar;1",SMTP:"credencial.com.ar;1",SMTP:"creditofirme.com;1",SMTP:"creditosdirectos.com.uy;1",SMTP:"deloitte.com;1",SMTP:"finangroup.com.ar;1",SMTP:"inbursa.com;1",SMTP:"gi-de.com;1",SMTP:"gyd.com.ar;1",SMTP:"ar.unisys.com;1",SMTP:"petrobras.com.ar;1",SMTP:"suris.com.ar;1",SMTP:"mx.unisys.com;1",SMTP:"*.unisys.com;1",SMTP:"tcs.com;1",SMTP:"afip.gov.ar;1",SMTP:"creditofamiliar.com.mx;1",SMTP:"cfmex.com.mx;1",SMTP:"banamex.com;1",SMTP:"devinline.com.ar;1",SMTP:"ar.sonda.com;1",SMTP:"pagofacil.com.ar;1",SMTP:"siemens-itron.com.ar;1",SMTP:"gecapital.com;1",SMTP:"ge.com;1",SMTP:"comafi.com.ar;1",SMTP:"credial.com.ar;1",SMTP:"advancedsl.com.ar;1",SMTP:"tarshop.com.ar;1",SMTP:"tarjetashopping.com.ar;1",SMTP:"hsbc.com.ar;1",SMTP:"globalpartner-latam.com;1",SMTP:"bancopatagonia.com.ar;1",SMTP:"patagoniasudameris.com.ar;1",SMTP:"bancocolumbia.com.ar;1",SMTP:"vemn.com.ar;1",SMTP:"cordialfinanciera.com.ar;1",SMTP:"ingeniaglobal.cl;1",SMTP:"dataserver.cl;1",SMTP:"cysce.com;1",SMTP:"transbank.cl;1",SMTP:"amf-mt.cl;1",SMTP:"dctiss.cl;1",SMTP:"tricot.cl;1",SMTP:"uy.ibm.com;1",SMTP:"sistarbanc.com;1",SMTP:"quanam.com;1",SMTP:"feoliyasociados.com.uy;1",SMTP:"cs.com.uy;1",SMTP:"ces.com.uy;1",SMTP:"sistarbanc.com.uy;1",SMTP:"bancosanjuan.com;1",SMTP:"harriague.com;1",SMTP:"bancor.com.ar;1",SMTP:"hipotecario.com.ar;1",SMTP:"isecauditors.com;1",SMTP:"bancosantacruz.com;1",SMTP:"finandino.com.ar;1",SMTP:"tarjetadinosaurio.com.ar;1",SMTP:"grupodinosaurio.com;1",SMTP:"supervielle.com.ar;1",SMTP:"bsg.com.ar;1",SMTP:"cabal.coop;1",SMTP:"cabal.com.ar;1",SMTP:"aeoninfinity.com.ar;1",SMTP:"4it.com.ar;1",SMTP:"bancoindustrial.com.ar;1",SMTP:"sub1.com.ar;1",SMTP:"globalprocessing.com.ar;1",SMTP:"bancost.com.ar;1",SMTP:"Cencosud.com;1",SMTP:"Cencosud.com.pe;1",SMTP:"paris.cl;1",SMTP:"bancocencosud.com.pe;1",SMTP:"cencosud.cl;1",SMTP:"ewong.com;1",SMTP:"cencosud.com.ar;1",SMTP:"*.bancocolumbia.com.ar;1",SMTP:"stratus.com.mx;1",SMTP:"bancodeltucuman.com.ar;1",SMTP:"innovapay.cl;1",SMTP:"*.vemn.com.ar;1",SMTP:"ticn-la.com;1",SMTP:"redlink.com.ar;1",SMTP:"vigiloo.com.ar;1",SMTP:"hsbc.com.mx;1"
+```
+### Example
+```
+Set-SendConnector -Identity "Clients" -AddressSpaces SMTP:""*.bancobisel.com.ar;1"",SMTP:""*.bancobisel.com;1",SMTP":*.nbbisel.com.ar;1""
+```
+### Loggin
+```
+Set-SendConnector “Clients” -ProtocolLoggingLevel verbose
+```
