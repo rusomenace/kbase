@@ -1,5 +1,37 @@
-$def_msg = "Just another commit"
-$commit_msg = if($commit_msg = (Read-Host "Commit message -Default: $def_msg]")){$commit_msg}else{$def_msg}
+Function Get-ProjectType {
+    $type=Read-Host "
+    Comment
+
+    1 - Build: Cambios que afectan el sistema de compilación o las dependencias externas
+    2 - CI: Cambios en nuestros archivos y scripts de configuración de CI
+    3 - Docs: Solo cambios en la documentación
+    4 - Feat: Una nueva característica
+    5 - Fix: Una corrección de errores
+    6 - Perf: Un cambio de código que mejora el rendimiento
+    7 - Refactor: Un cambio de código que no corrige un error ni agrega una característica
+    8 - Style: Cambios que no afectan el significado del código
+    9 - Test: Adición de pruebas faltantes o corrección de pruebas existentes
+    
+    Choose option"
+    Switch ($type){
+        1 {$choice="Build:"}
+        2 {$choice="CI:"}
+        3 {$choice="Docs:"}
+        4 {$choice="Feat:"}
+        5 {$choice="Fix:"}
+        6 {$choice="Perf:"}
+        7 {$choice="Refactor:"}
+        8 {$choice="Style:"}
+        9 {$choice="Test:"}
+    }
+    return $choice
+}
+$CommentType=Get-ProjectType
+git pull
+$DefaultMessage = "Just another commit"
+Write-Host -Foregroundcolor DarkCyan "Input Message or leave default"
+$CommitMessage = if($CommitMessage = (Read-Host "Commit message -Default: $DefaultMessage]")){$CommitMessage}else{$DefaultMessage}
+$PushMessage = "$CommentType $CommitMessage"
 git add .
-git commit -am "$commit_msg"
+git commit -am "$PushMessage"
 git push
