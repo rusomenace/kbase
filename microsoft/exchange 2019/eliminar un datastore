@@ -1,0 +1,11 @@
+Nos gusta eliminar la base de datos de buzones en Exchange Server 2019. Seleccione la base de datos que desea desmontar en la vista de lista. Haga clic en el ícono Más... en la barra de herramientas y haga clic en Desmontar en el EAC.
+
+Si al eliminar la base de datos obtenemos un error que empieza como "This mailbox database contains one or more mailboxes, mailbox plans, archive mailboxes..." referirse al siguiente paso
+
+No se puede eliminar la solución de la base de datos del buzón
+La solución al error es asegurarse de que no haya buzones en la base de datos. Si hay buzones en la base de datos, no se le permite eliminar la base de datos de buzones en Exchange Server. Debe verificar todos los buzones uno por uno en la base de datos de buzones y moverlos a otra base de datos.
+
+Un vez verificado que no hay mas mailbox en el datastore se puede eliminar
+Los archivois fisicos de la base de datos deben ser eliminados a mano
+
+Ref: https://www.alitajran.com/delete-mailbox-database-exchange/#:~:text=Click%20Yes.-,Delete%20the%20mailbox%20database,Click%20Yes.
