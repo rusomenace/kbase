@@ -13,5 +13,6 @@ nano /etc/snmp/snmpd.conf
 ```
 Agregar lo siguiente
 ```
-
+#com2sec notConfigUser  default       public
+rocommunity public 10.1.1.33
 ```

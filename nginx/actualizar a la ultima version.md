@@ -86,3 +86,15 @@ sudo yum install nginx
 When prompted to accept the GPG key, verify that the fingerprint matches **573B FD6B 3D8F BC64 1079 A6AB ABF5 BD82 7BD9 BF62**, and if so, accept it.
 
 **Ref:** http://nginx.org/en/linux_packages.html#ubuntu
+
+## Troubleshooting
+If nginx -t doesn’t return anything, I would verify Nginx error log. By default, it should be located in /var/log/nginx/error.log. You can open it with any text editor:
+```
+sudo nano /var/log/nginx/error.log
+```
+Can you find there something suspiciously?
+
+Second log which can you take a look is Syslog:
+```
+sudo nano /var/log/syslog
+```

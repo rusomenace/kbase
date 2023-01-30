@@ -25,3 +25,19 @@ cat /etc/os-release
 ```
 ## Modulo para navegar los directorios (ubuntu)
 ncdu
+
+## Listar gran cantidad de files y tambien eliminarlos
+```
+find . -name "*.pdf" -delete
+```
+
+## Listar todos los servicios disponibles
+```
+systemctl list-units --type=service
+OR
+systemctl --type=service
+```
+El mismo comando se puede utilizar con la opcion grep para buscar un servicio en particular
+```
+systemctl list-units --type=service | grep snmpd
+```

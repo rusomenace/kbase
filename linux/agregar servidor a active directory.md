@@ -125,3 +125,15 @@ id username@domain.local
 ```
 realm list
 ```
+## Como eliminar un usuario o grupo permitido
+```
+realm permit --withdraw -g NombreDeGrupo
+realm permit --withdraw NombreDeUsuario
+```
+## Adicionalmente agregar el nombre del dominio para uso por defecto
+Debajo de [sssd]
+
+```
+sudo nano /etc/sssd/sssd.conf
+default_domain_suffix = ad.company.local
+```

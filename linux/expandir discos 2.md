@@ -144,7 +144,50 @@ Algunos filesystems no utilizan resize2fs como en este caso y se utilizo el sigu
 ```
 sudo xfs_growfs /dev/rootvg/rootlv
 ```
-
-
-
-
+# Linux Centos-Rocky-RedHat expandir disco virtual
+```
+fdisk /dev/sda
+```
+Ver opciones
+```
+m
+```
+Crear particion, dar a todo por defecto
+```
+n
+```
+Mostrar cambios
+```
+p
+```
+Cambiar el tipo a LVM
+```
+t
+opcion 30 de LVM
+```
+Guardar cambios
+```
+w
+```
+Crear un volumen fisico con nombre del VG
+```
+pvcreate rl_rocky91 /dev/sda4
+pvdisplay
+```
+Extender el LV con el disco nuevo y verificar el espacio libre
+```
+vgextend rl_rocky91 /dev/sda4 
+vgs
+```
+Listar los volumenes con 
+```
+df -h
+```
+Incrementar el size block
+```
+lvextend -l +100%FREE /dev/mapper/rl_rocky91-root
+```
+Extender el filesystem
+```
+xfs_growfs /dev/mapper/rl_rocky91-root
+```
