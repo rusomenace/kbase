@@ -1,0 +1,1 @@
+Get-Process | Sort-Object CPU -Desc | Select-Object ID, Name, CPU, @{Name='ThreadCount';Expression ={$_.Threads.Count}} -First 5
