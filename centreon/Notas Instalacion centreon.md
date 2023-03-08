@@ -78,3 +78,67 @@ network:
   # Set time chrony
 
   https://wiki.crowncloud.net/?How_to_Sync_Time_in_CentOS_8_using_Chrony
+
+  # Bitwarden
+
+hernan@021informatics.com
+INSTALLATION ID: f5bc3fee-6d96-4b8a-9f47-afbd009e76e1
+INSTALLATION KEY: lLowFsZzfZEjl0qJjpYw
+
+
+https://bitwarden.com/
+
+# Instalar docker y docker-compose 
+apt-get install docker.io docker-compose -y
+
+# Bajar script bitwarden
+curl -Lso bitwarden.sh https://go.btwrdn.co/bw-sh \
+    && chmod +x bitwarden.sh
+
+# Correr el instalador
+./bitwarden.sh install
+
+# Credenciales de INFO@021....
+
+MzM]e+G`9A-_b_4)
+
+cqsuyoqrexnusycr
+
+# Docker Compose
+```
+version: '3'
+
+services:
+  vaultwarden:
+    restart: always
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    volumes:
+      - /var/vaultwarden/data:/data/
+    ports:
+      - 8883:80
+    environment:
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_FROM=hernan.maslowski@gmail.com
+      - SMTP_FROM_NAME=VaultWarden021
+      - SMTP_SECURITY=starttls
+      - SMTP_PORT=587
+      - SMTP_USERNAME=hernan.maslowski@gmail.com
+      - SMTP_PASSWORD=cqsuyoqrexnusycr
+      - SMTP_TIMEOUT=30
+      - SMTP_AUTH_MECHANISM="Plain"
+      - LOGIN_RATELIMIT_MAX_BURST=10
+      - LOGIN_RATELIMIT_SECONDS=60
+      - DOMAIN=https://vaultwarden.021informatics.com:8882
+      - INVITATION_ORG_NAME=HomeVault
+      - INVITATIONS_ALLOWED=true
+      - ADMIN_TOKEN=j;lk897J89f7d3k.das3
+      - SIGNUPS_ALLOWED=false
+      - SIGNUPS_DOMAINS_WHITELIST=021informatics.com
+      - SIGNUPS_VERIFY=true
+      - SIGNUPS_VERIFY_RESEND_TIME=3600
+      - SIGNUPS_VERIFY_RESEND_LIMIT=6
+      - EMERGENCY_ACCESS_ALLOWED=true
+      - SENDS_ALLOWED=true
+      - WEB_VAULT_ENABLED=true
+```

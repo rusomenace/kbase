@@ -105,7 +105,8 @@ mv netbox.key /etc/ssl/private/netbox.key
 systemctl restart nginx
 systemctl enable nginx
 ```
-
+- Ref: [Instalacion en ubuntu 22](https://www.hostnextra.com/kb/install-netbox-on-ubuntu/)
+- Ref: [Repositorio de objetos](https://github.com/netbox-community/devicetype-library/tree/master/device-types/Dell)
 
 
 
