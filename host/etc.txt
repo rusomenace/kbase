@@ -1,3 +1,4 @@
+'''
 # Copyright (c) 1993-2009 Microsoft Corp.
 #
 # This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
@@ -103,3 +104,4 @@
 127.0.0.1			cloud.devolutions.net
 
 # Labs
+'''
