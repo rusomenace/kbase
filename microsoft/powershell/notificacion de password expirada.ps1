@@ -11,6 +11,29 @@
 # Or Checkout my Youtube Channel - https://www.youtube.com/user/robtitlerequired
 #
 ##################################################################################################################
+# @ Task Scheduler
+#
+# El siguiente es un ejemplo de tarea programada en un domain controller para diariamente chequear el estado de las claves y su valides
+# Name: Password Expiration Notification Email
+# Security options: Run whether the user is logged on or not
+# Run with highest privileges
+#
+# @ Trigers
+# Daily 06:00:00AM and enable
+#
+# @ Actions
+# Start a program
+# program / script: powershell.exe
+# add arguments (optiona): -NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File C:\Tools\emailpassexpire.ps1
+#
+##################################################################################################################
+# @ SMTP con autenticacion
+#
+# $secpasswd = "SomeSecurePassword"
+# $secpasswd = ConvertTo-SecureString "PlainTextPassword" -AsPlainText -Force
+# $cred = New-Object System.Management.Automation.PSCredential ("username", $secpasswd)
+# Send-MailMessage -SmtpServer mysmptp -Credential $cred -UseSsl -From 'sender@gmail.com' -To 'recipient@gmail.com' -Subject 'TEST'
+#
 # Please Configure the following variables....
 $smtpServer="postfix.tqcorp.com"
 $expireindays = 15
@@ -54,7 +77,7 @@ foreach ($user in $users)
     $PasswordPol = (Get-AduserResultantPasswordPolicy $user)
     $sent = "" # Reset Sent Flag
     # Check for Fine Grained Password
-    if (($PasswordPol) -ne $null)
+    if ($null -ne ($PasswordPol))
     {
         $maxPasswordAge = ($PasswordPol).MaxPasswordAge
     }
@@ -103,7 +126,7 @@ foreach ($user in $users)
     } # End Testing
 
     # If a user has no email address listed
-    if (($emailaddress) -eq $null)
+    if ($null -ne ($emailaddress))
     {
         $emailaddress = $testRecipient
     }# End No Valid Email

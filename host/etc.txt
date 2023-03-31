@@ -97,6 +97,7 @@
 192.168.44.20	mkrovm20.mkro.local
 10.0.0.1		mkro_fortigate01.infrar.com.ar
 10.0.0.254		mkro_fortigate02.infrar.com.ar
+10.0.0.239		smg.infrar.com.ar
 
 # Devolutions Network
 10.1.1.56			dvls.tqcorp.com

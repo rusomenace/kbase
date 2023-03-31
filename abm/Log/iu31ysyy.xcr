@@ -1,0 +1,302 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20230131160805
+Username: TQ\hmaslowski
+RunAs User: TQ\hmaslowski
+Configuration Name: 
+Machine: TQARWSW1002 (Microsoft Windows NT 10.0.19045.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 22996
+PSVersion: 5.1.19041.2364
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.2364
+BuildVersion: 10.0.19041.2364
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\Log\iu31ysyy.xcr
+
+Verifique los datos ingresados
+
+Nombre de usuario NETBIOS:
+hmansilla
+Password:
+yFe2-68b.4BZ
+Nombre:
+Hugo
+Apellido:
+Mansilla
+Workstation o vm asignada:
+TQARWSW1004
+Cargo:
+Developer
+Unidad organizativa en AD:
+OU=dev,OU=users,OU=site0,OU=arg,DC=tq,DC=com,DC=ar
+Departamento:
+Desarrollo
+Responsable directo:
+ascheinkman
+Grupos de Seguridad:
+HPDesarrollo
+
+ Presionar cualquier tecla para continuar o CTRL+C para salir
+20230131-161540 INFO: New User creation Script execution
+INFO: Using Active Directory Domain Controller: tqarsvw19dc01
+INFO: Creating Active Directory User object...
+INFO: Waiting Active Directory User creation...
+
+INFO: Active Directory User created, continuing script execution
+INFO: Creating User Mail address...
+INFO: Assigning User default AD Security Group Memberships...
+INFO: Assigning Ad-hoc AD Security Group Memberships...
+Membership Assignment: HPDesarrollo
+PS>TerminatingError(Add-ADPrincipalGroupMembership): "Cannot find an object with identity: 'HPDesarrollo' under: 'DC=tq,DC=com,DC=ar'."
+Add-ADPrincipalGroupMembership : Cannot find an object with identity: 'HPDesarrollo' under: 'DC=tq,DC=com,DC=ar'.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:181 char:5
++ ...             Add-ADPrincipalGroupMembership -Server $ADController -Ide ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (HPDesarrollo:ADGroup) [Add-ADPrincipalGroupMembership], 
+ADIdentityNotFoundException
+    + FullyQualifiedErrorId : SetADPrincipalGroupMembership:ValidateMemberOfParameter,Microsoft.ActiveDirectory.Manageme
+nt.Commands.AddADPrincipalGroupMembership
+SamAccountName UserPrincipalName
+-------------- -----------------
+hmansilla      hmansilla@tqcorp.com
+Add-ADPrincipalGroupMembership : Cannot find an object with identity: 'HPDesarrollo' under: 'DC=tq,DC=com,DC=ar'.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:181 char:5
++ ...             Add-ADPrincipalGroupMembership -Server $ADController -Ide ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (HPDesarrollo:ADGroup) [Add-ADPrincipalGroupMembership], ADIdentityNotFoundException
+    + FullyQualifiedErrorId : SetADPrincipalGroupMembership:ValidateMemberOfParameter,Microsoft.ActiveDirectory.Management.Commands.AddADPrincipalGroupMembership
+
+INFO: Setting Active Directory User Profile Picture...
+PS>TerminatingError(Set-ADUser): "A value for the attribute was not in the acceptable range of values"
+Set-ADUser : A value for the attribute was not in the acceptable range of values
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:187 char:71
++ ... Name.jpg") {Set-ADUser -Server $ADController -Identity $UsrName -Repl ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (hmansilla:ADUser) [Set-ADUser], ADException
+    + FullyQualifiedErrorId : ActiveDirectoryServer:8322,Microsoft.ActiveDirectory.Management.Commands.SetADUser
+Set-ADUser : A value for the attribute was not in the acceptable range of values
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:187 char:71
++ ... Name.jpg") {Set-ADUser -Server $ADController -Identity $UsrName -Repl ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (hmansilla:ADUser) [Set-ADUser], ADException
+    + FullyQualifiedErrorId : ActiveDirectoryServer:8322,Microsoft.ActiveDirectory.Management.Commands.SetADUser
+
+INFO: Creating Mail Signature files...
+INFO: Creating User's personal folders...
+
+processed file: P:\Users\hmansilla
+Successfully processed 1 files; Failed processing 0 files
+INFO: Granting Workstation Local Administration rights...
+INFO: Setting Workstation's Description...
+
+          Welcome to VMware PowerCLI!
+
+Log in to a vCenter Server or ESX host:
+Connect-VIServer
+To find out what commands are available, type:
+Get-VICommand
+To show searchable help for all PowerCLI commands:
+Get-PowerCLIHelp
+Once you've connected, display all virtual machines:
+Get-VM
+If you need more help, visit the PowerCLI community:
+Get-PowerCLICommunity
+
+       Copyright (C) VMware, Inc. All rights reserved.
+
+
+INFO: Setting VMWare VM Notes to Match username as Active Directory Computer Description...
+
+
+INFO: Syncing Local Active Directory with Azure AD...
+
+
+INFO: Creating AD user in fortigate TQARFW01...
+Get-Content : Cannot find path 'C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\key\hmaslowski.fw.key' because it 
+does not exist.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:239 char:13
++ $password = Get-Content $pwdfile | ConvertTo-SecureString
++             ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\hmaslo...aslowski.fw.key:String) [Get-Content], 
+ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+Get-Content : Cannot find path 'C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\key\hmaslowski.fw.key' because it does not exist.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:239 char:13
++ $password = Get-Content $pwdfile | ConvertTo-SecureString
++             ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\hmaslo...aslowski.fw.key:String) [Get-Content], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+
+PS>TerminatingError(New-Object): "Exception calling ".ctor" with "2" argument(s): "Cannot process argument because the value of argument "password" is null. Change the value of argument "password" to a non-null value.""
+New-Object : Exception calling ".ctor" with "2" argument(s): "Cannot process argument because the value of argument 
+"password" is null. Change the value of argument "password" to a non-null value."
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:242 char:9
++ $cred = New-Object -TypeName System.Management.Automation.PSCredentia ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [New-Object], MethodInvocationException
+    + FullyQualifiedErrorId : ConstructorInvokedThrowException,Microsoft.PowerShell.Commands.NewObjectCommand
+New-Object : Exception calling ".ctor" with "2" argument(s): "Cannot process argument because the value of argument "password" is null. Change the value of argument "password" to a non-null value."
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:242 char:9
++ $cred = New-Object -TypeName System.Management.Automation.PSCredentia ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [New-Object], MethodInvocationException
+    + FullyQualifiedErrorId : ConstructorInvokedThrowException,Microsoft.PowerShell.Commands.NewObjectCommand
+
+PS>TerminatingError(New-SSHSession): "Cannot validate argument on parameter 'Credential'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
+New-SSHSession : Cannot validate argument on parameter 'Credential'. The argument is null or empty. Provide an argument 
+that is not null or empty, and then try the command again.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:244 char:64
++ New-SshSession -ComputerName "tqarfw01.tqcorp.com" -Credential $cred
++                                                                ~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-SSHSession], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,SSH.NewSshSession
+New-SSHSession : Cannot validate argument on parameter 'Credential'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again.
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:244 char:64
++ New-SshSession -ComputerName "tqarfw01.tqcorp.com" -Credential $cred
++                                                                ~~~~~
+    + CategoryInfo          : InvalidData: (:) [New-SSHSession], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,SSH.NewSshSession
+
+INFO: Accessing Office 365 environment...
+PS>TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> clear
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> ls
+
+
+    Directory: C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        31/1/2023     16:18                [0m  key[0m
+d-----        31/1/2023     16:08                [0m  Log[0m
+-a----         5/1/2023     17:40          18702 [38;2;0;191;255mﲵ  add_user.ps1[0m
+-a----        29/6/2022     14:38           1299 [38;2;0;191;255mﲵ  remove_user.ps1[0m
+
+
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> .\add_user.ps1
+Transcript started, output file is C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\Log\wwwhzawu.wwy
+
+Verifique los datos ingresados
+
+Nombre de usuario NETBIOS:
+hmansilla
+Password:
+Password666.
+Nombre:
+Hugo
+Apellido:
+Mansilla
+Workstation o vm asignada:
+TQARWSW1004
+Cargo:
+Developer
+Unidad organizativa en AD:
+OU=dev,OU=users,OU=site0,OU=arg,DC=tq,DC=com,DC=ar
+Departamento:
+Desarrollo
+Responsable directo:
+ascheinkman
+Grupos de Seguridad:
+
+
+ Presionar cualquier tecla para continuar o CTRL+C para salir
+20230131-162347 INFO: New User creation Script execution
+INFO: Using Active Directory Domain Controller: tqarsvw19dc01
+INFO: Creating Active Directory User object...
+INFO: Waiting Active Directory User creation...
+
+INFO: Active Directory User created, continuing script execution
+INFO: Creating User Mail address...
+INFO: Assigning User default AD Security Group Memberships...
+INFO: Assigning Ad-hoc AD Security Group Memberships...
+INFO: Setting Active Directory User Profile Picture...
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Set-ADUser): "A value for the attribute was not in the acceptable range of values"
+Set-ADUser : A value for the attribute was not in the acceptable range of values
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:187 char:71
++ ... Name.jpg") {Set-ADUser -Server $ADController -Identity $UsrName -Repl ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (hmansilla:ADUser) [Set-ADUser], ADException
+    + FullyQualifiedErrorId : ActiveDirectoryServer:8322,Microsoft.ActiveDirectory.Management.Commands.SetADUser
+SamAccountName UserPrincipalName
+-------------- -----------------
+hmansilla      hmansilla@tqcorp.com
+Set-ADUser : A value for the attribute was not in the acceptable range of values
+At C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\add_user.ps1:187 char:71
++ ... Name.jpg") {Set-ADUser -Server $ADController -Identity $UsrName -Repl ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (hmansilla:ADUser) [Set-ADUser], ADException
+    + FullyQualifiedErrorId : ActiveDirectoryServer:8322,Microsoft.ActiveDirectory.Management.Commands.SetADUser
+
+INFO: Creating Mail Signature files...
+INFO: Creating User's personal folders...
+processed file: P:\Users\hmansilla
+Successfully processed 1 files; Failed processing 0 files
+INFO: Granting Workstation Local Administration rights...
+TQ\hmansilla is already a member of group Administrators.
+    + CategoryInfo          : ResourceExists: (Administrators:String) [Add-LocalGroupMember], MemberExistsException
+    + FullyQualifiedErrorId : MemberExists,Microsoft.PowerShell.Commands.AddLocalGroupMemberCommand
+    + PSComputerName        : TQARWSW1004
+TQ\hmansilla is already a member of group Administrators.
+    + CategoryInfo          : ResourceExists: (Administrators:String) [Add-LocalGroupMember], MemberExistsException
+    + FullyQualifiedErrorId : MemberExists,Microsoft.PowerShell.Commands.AddLocalGroupMemberCommand
+    + PSComputerName        : TQARWSW1004
+
+INFO: Setting Workstation's Description...
+
+INFO: Setting VMWare VM Notes to Match username as Active Directory Computer Description...
+
+
+INFO: Syncing Local Active Directory with Azure AD...
+
+
+INFO: Creating AD user in fortigate TQARFW01...
+
+
+True
+INFO: Accessing Office 365 environment...
+INFO: Waiting for MS Online User creation...
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Get-MsolUser): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: User Not Found.  User: hmansilla@tqcorp.com."
+WAIT: MS Online User not available, next attempt in 60 seconds
+               hmansilla@tqcorp.com
+INFO: MS Online User created, continuing script execution
+INFO: Assigning MS Online User with proper Office 365 License...
+INFO: Setting Office 365 License permissions...
+INFO: Waiting for User Mailbox creation...
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Get-EXOMailbox): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Error while querying REST service. HttpStatusCode=404 ErrorMessage={"error":{"code":"NotFound","message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","details":[{"code":"Context","target":"","message":"Ex6F9304|Microsoft.Exchange.Configuration.Tasks.ManagementObjectNotFoundException|The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'."}],"innererror":{"message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","type":"Microsoft.Exchange.Admin.OData.Core.ODataServiceException"}}}}"
+WAIT: User Mailbox not available, next attempt in 60 seconds
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Get-EXOMailbox): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Error while querying REST service. HttpStatusCode=404 ErrorMessage={"error":{"code":"NotFound","message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","details":[{"code":"Context","target":"","message":"Ex6F9304|Microsoft.Exchange.Configuration.Tasks.ManagementObjectNotFoundException|The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'."}],"innererror":{"message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","type":"Microsoft.Exchange.Admin.OData.Core.ODataServiceException"}}}}"
+WAIT: User Mailbox not available, next attempt in 60 seconds
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Get-EXOMailbox): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Error while querying REST service. HttpStatusCode=404 ErrorMessage={"error":{"code":"NotFound","message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","details":[{"code":"Context","target":"","message":"Ex6F9304|Microsoft.Exchange.Configuration.Tasks.ManagementObjectNotFoundException|The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'."}],"innererror":{"message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","type":"Microsoft.Exchange.Admin.OData.Core.ODataServiceException"}}}}"
+WAIT: User Mailbox not available, next attempt in 60 seconds
+PS C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm> TerminatingError(Get-EXOMailbox): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Error while querying REST service. HttpStatusCode=404 ErrorMessage={"error":{"code":"NotFound","message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","details":[{"code":"Context","target":"","message":"Ex6F9304|Microsoft.Exchange.Configuration.Tasks.ManagementObjectNotFoundException|The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'."}],"innererror":{"message":"Error executing request. The operation couldn't be performed because object 'hmansilla@tqcorp.com' couldn't be found on 'CP2P152A001DC05.LAMP152A001.PROD.OUTLOOK.COM'.","type":"Microsoft.Exchange.Admin.OData.Core.ODataServiceException"}}}}"
+WAIT: User Mailbox not available, next attempt in 60 seconds
+               hmansilla@tqcorp.com
+INFO: User Mailbox created, continuing script execution
+INFO: Setting User Mailbox standard Regional Settings...
+INFO: =============================================================
+
+Attention!
+You are currently using an older version of the Exchange Online PowerShell module which uses RPS. RPS deprecation has been announced and you will need to move to the latest V3 module by June 2023. Read more here: https://aka.ms/RPSDeprecation 
+Please install our new REST-based PS V3 module downloadable from https://www.powershellgallery.com/packages/ExchangeOnlineManagement/, which is more secure and reliable.
+Please note that you will no longer be able to use -UseRPSSession after June 2023.
+
+============================================================
+INFO: Setting User Mailbox standard Language...
+INFO: Setting User Mailbox Protocol permissions...
+INFO: Setting User Mailbox Profile Picture...
+INFO: Enabling User Mailbox Archive Policy...
+               hmansilla@tqcorp.com
+INFO: Assigning User Global Groups memberships...
+20230131-163058 INFO: Script completed
+Transcript stopped, output file is C:\Users\hmaslowski\Documents\DevopsGit\KBase\abm\Log\wwwhzawu.wwy
+
+
