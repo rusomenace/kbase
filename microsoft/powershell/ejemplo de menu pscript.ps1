@@ -15,6 +15,7 @@ do
 $r = Read-Host $menu
 
 Switch ($r) {
+
 "1"
 {
 $server = Read-Host "Introduce el nombre del servidor"

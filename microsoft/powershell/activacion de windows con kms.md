@@ -1,5 +1,11 @@
 # Activar windows via KMS
 
+## Activar Remotamente
+
+```
+Invoke-Command -ComputerName COMPUTER_NAME_HERE -ScriptBlock {cscript.exe c:\windows\system32\slmgr.vbs /skms replace_kms_here ; cscript.exe c:\windows\system32\slmgr.vbs /ato}
+```
+
 ## El siguiente script usa el kms interno de TQ para configurarse y activarse
 ```
 $activation = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | where { $_.PartialProductKey } | select -ExpandProperty LicenseStatus

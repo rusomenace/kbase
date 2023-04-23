@@ -29,10 +29,15 @@ cat /etc/resolv.conf
 server.dominio.local
 ```
 
-## Instalar los paquetes
+## Instalar los paquetes en Ubuntu/Debian
 ```
 sudo apt update
 sudo apt -y install realmd libnss-sss libpam-sss sssd sssd-tools adcli samba-common-bin oddjob oddjob-mkhomedir packagekit
+```
+
+## Instalar los paquetes en Rocky/RHEL
+```
+sudo dnf install -y realmd sssd oddjob oddjob-mkhomedir adcli samba-common-tools
 ```
 
 ## Descubri el dominio
@@ -43,15 +48,16 @@ realm discover tq.com.ar
 ## Buscar ayuda y adjuntar al dominio
 ```
 realm join --help
-realm join -U administrator tq.com.ar
+realm join tq.com.ar -U administrator
 ```
+* Nota: Si no se está corriendo con el usuario root, utilizar sudo
 
 ## Verificar que ingreso correctamente
 ```
 realm list
 ```
 
-## Crear el homedir por defecto
+## Crear el homedir por defecto (Ubuntu/Debian)
 ```
 sudo bash -c "cat > /usr/share/pam-configs/mkhomedir" <<EOF
 Name: activate mkhomedir
@@ -63,15 +69,31 @@ Session:
 EOF
 ```
 
-## Activarlo
+## Crear el homedir por defecto (Rocky/RHEL)
+```
+sudo nano /etc/pam.d/mkhomedir
+```
+Agregar las siguientes lineas:
+# mkhomedir PAM configuration file
+session     optional    pam_mkhomedir.so skel=/etc/skel umask=0022
+
+## Activarlo (Ubuntu/Debian)
 ```
 sudo pam-auth-update
 ```
 ***Seleccionar la opcion activate mkhomedir***
 
+## Activarlo (Rocky/RHEL)
+En CentOS 8, no es necesario ejecutar el comando pam-auth-update, como en Ubuntu/Debian
+
 ## Reiniciar el servicio y verificar estado
+
 ```
 systemctl restart sssd
+```
+### Chequear el estado del servicio sssd
+
+```
 systemctl status sssd
 ```
 

@@ -1,6 +1,6 @@
 ## Instalacion
 ```
-
+dnf install net-snmp
 ```
 ## Iniciar el servicio definir que autoarrance
 ```

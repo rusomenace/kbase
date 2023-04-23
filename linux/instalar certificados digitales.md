@@ -10,7 +10,7 @@ sudo apt-get install -y ca-certificates
 sudo cp tqarfw01.crt /usr/local/share/ca-certificates
 sudo update-ca-certificates
 ```
-Contenido del bash scrit
+Contenido del bash script
 ```
 apt-get install -y ca-certificates
 wget http://tqarsvw19dc01/certs/tqarfw01.crt

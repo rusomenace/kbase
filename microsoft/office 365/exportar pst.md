@@ -11,7 +11,7 @@
 7. Nuevamente en la ventana de *Content search* aparecerá nuestra busqueda que nos permitirá seguir con los pasos siguientes una vez que pase al estado *Completed*. Este proceso puede demorar algunos minutos.
 8. Una vez finalizado, seleccionamos la busqueda que generamos anteriormente y hacemos click en **Actions** y luego **Export Results**.
 9. Dejar las opciones por defecto en *Output options* y *Export Exchange content as*
-10. Si todo resulta correcto, se visibilizará el mensaje *A job has been created
+10. Si todo resulta correcto, se visibilizará el mensaje *A job has been created*
 11. Una vez que el status cambia a *Completed* ingresar a al tab **Export** y doble click sobre el usuario a exportar sus .pst
 12. En la sección **Export key** click en **Copy to clipboard** y por ultimo click arriba en **Download Result**
 13. Recordar correr este proceso desde MS Edge y de esta manera aparecerá una ventana a la que hay que abrir haciendo click en *open*. Una nueva ventana solicitará instalar una aplicación y procedemos con *Install*

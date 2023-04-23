@@ -5,9 +5,9 @@ dnf install net-snmp net-snmp-libs net-snmp-utils
 systemctl enable --now snmpd
 systemctl status snmpd
 ```
-## Para reiniciar el servicio
+## Para habilitar el servicio con inicio de OS
 ```
-systemctl restart snmpd
+systemctl enable snmpd
 ```
 ## Editar la configuracion
 ```
@@ -33,4 +33,8 @@ Comentar para deshabilitar las siguientes 2 entradas
 Ajustar la comunidad segun corresponda y declarar la IP del servidor de logs destino
 ```
 rocommunity public 10.1.1.33
+```
+El siguiente comando agrega la comunidad directamente en el archivo de configuracion
+```
+echo -e "# SNMP version 2c community\nrocommunity public 10.1.1.33" >> /etc/snmp/snmpd.conf
 ```

@@ -1,5 +1,3 @@
-Ref: https://www.hostnextra.com/kb/install-netbox-on-ubuntu/
-
 ## Credenciales de servicios
 ```
 uroot
@@ -106,7 +104,7 @@ systemctl restart nginx
 systemctl enable nginx
 ```
 - Ref: [Instalacion en ubuntu 22](https://www.hostnextra.com/kb/install-netbox-on-ubuntu/)
-- Ref: [Repositorio de objetos](https://github.com/netbox-community/devicetype-library/tree/master/device-types/Dell)
+- Ref: [Repositorio de objetos](https://github.com/netbox-community/devicetype-library)
 
 
 
