@@ -19,6 +19,12 @@
 # localhost name resolution is handled within DNS itself.
 #	127.0.0.1       localhost
 #	::1             localhost
+# Microsoft
+127.0.0.1			telemetry.microsoft.com
+127.0.0.1			data.microsoft.com
+127.0.0.1			settings-win.data.microsoft.com
+127.0.0.1			settings.data.microsoft.com
+
 
 # SnagIT
 127.0.0.1			www.techsmith.com
@@ -97,10 +103,7 @@
 10.0.0.1		mkro_fortigate01.infrar.com.ar
 10.0.0.254		mkro_fortigate02.infrar.com.ar
 10.0.0.239		smg.infrar.com.ar
-
-# Devolutions Network
-10.1.1.56			dvls.tqcorp.com
-127.0.0.1			crm.devolutions.net
-127.0.0.1			cloud.devolutions.net
+10.0.0.219		vw.infrar.com.ar
+10.0.0.218		netbox.infrar.com.ar
 
 # Labs
