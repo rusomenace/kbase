@@ -77,7 +77,7 @@ export ADMIN_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
 docker-compose up -d
 ```
 
-### Este ultimo dispara todo y suma request de user 1 y 2
+### V3 | Este ultimo dispara todo y suma request de user 1 y 2
 ```
 #!/bin/bash
 
@@ -105,4 +105,36 @@ export USER2_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
 # Run Docker Compose
 docker-compose up -d
 
+```
+
+### V4 | Preparando para TLS con certificado de tqcorp.dev
+```
+version: '2'
+
+services:
+  openldap:
+    image: docker.io/bitnami/openldap:latest
+    ports:
+      - '389:1389'
+      - '636:1636'
+    environment:
+      - 'LDAP_ROOT=dc=openldap,dc=local'
+      - LDAP_ADMIN_USERNAME=openldapadmin
+      - LDAP_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - LDAP_USERS=user1,user2,pferrero
+      - LDAP_PASSWORDS=${USER1_PASSWORD},${USER2_PASSWORD},${PFERRERO_PASSWORD}
+      - LDAP_ENABLE_TLS=yes  # Enable TLS
+      - LDAP_TLS_CERT_FILE=certs/ldap.crt  # Path inside the container for the server certificate
+      - LDAP_TLS_KEY_FILE=certs/ldap.key   # Path inside the container for the private key
+      - LDAP_TLS_CA_FILE=certs/the-ca.crt # File containing the CA of the certificate
+      - LDAP_LDAPS_PORT_NUMBER=1636
+      - LDAP_TLS_VERIFY_CLIENT=try
+    volumes:
+      - 'openldap_data:/bitnami/openldap'
+      - './tls_certs:/certs:ro'  # Mount TLS certificate directory as read-only
+    restart: always
+
+volumes:
+  openldap_data:
+    driver: local
 ```
