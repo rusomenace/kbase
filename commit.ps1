@@ -2,15 +2,15 @@ Function Get-ProjectType {
     $type=Read-Host "
     Comment
 
-    1 - Build: Cambios que afectan el sistema de compilación o las dependencias externas
-    2 - CI: Cambios en nuestros archivos y scripts de configuración de CI
-    3 - Docs: Solo cambios en la documentación
-    4 - Feat: Una nueva característica
-    5 - Fix: Una corrección de errores
-    6 - Perf: Un cambio de código que mejora el rendimiento
-    7 - Refactor: Un cambio de código que no corrige un error ni agrega una característica
-    8 - Style: Cambios que no afectan el significado del código
-    9 - Test: Adición de pruebas faltantes o corrección de pruebas existentes
+    1 - Build: Cambios que afectan el sistema de compilacion o las dependencias externas
+    2 - CI: Cambios en nuestros archivos y scripts de configuracion de CI
+    3 - Docs: Solo cambios en la documentacion
+    4 - Feat: Una nueva caracteristica
+    5 - Fix: Una correccion de errores
+    6 - Perf: Un cambio de codigo que mejora el rendimiento
+    7 - Refactor: Un cambio de codigo que no corrige un error ni agrega una caracteristica
+    8 - Style: Cambios que no afectan el significado del codigo
+    9 - Test: Adicion de pruebas faltantes o correccion de pruebas existentes
     
     Choose option"
     Switch ($type){
