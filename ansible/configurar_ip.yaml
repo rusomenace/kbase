@@ -1,0 +1,63 @@
+---
+- name: Configurar netplan para interfaz de red ens160 (Ubuntu)
+  hosts: localhost
+  become: true
+  vars:
+    hostname: "ansibleubuntu1"
+    interface: "ens160" #ens160 para Ubuntu y ens192 para Rocky
+    ip_address: "192.168.101.49"
+    netmask: "255.255.255.0"
+    gateway: "192.168.101.255"
+    dns_servers:
+      - "10.1.1.13"
+      - "10.1.1.15"
+    domain_search: "tq.com.ar"
+    static_routes:
+      - destination: "10.1.1.0/24"
+        gateway: "192.168.101.250"
+      - destination: "0.0.0.0/0"
+        gateway: "192.168.101.253"
+
+  tasks:
+    - name: Configurar hostname
+      hostname:
+        name: "{{ hostname }}"
+      become: yes
+
+    - name: Configurar netplan
+    template:
+      src: templates/01-netcfg.yaml.j2 #Debe estar creado el directorio templates y el archivo j2 creado
+      dest: /etc/netplan/01-netcfg.yaml
+      notify:
+      - apply netplan
+  handlers:
+  - name: apply netplan
+    shell: netplan apply
+
+  - name: Configurar red en ens192 (Rocky)
+      template:
+      src: templates/ifcfg.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-ens192
+      mode: '0644'
+    notify: Reiniciar red
+    
+  - name: Configurar resolv.conf
+    copy:
+      dest: /etc/resolv.conf
+      content: |
+        nameserver {{ dns_servers[0] }}
+        nameserver {{ dns_servers[1] }}
+        search {{ domain_search }}
+    
+  - name: Configurar rutas estáticas
+    lineinfile:
+      dest: /etc/sysconfig/network-scripts/route-ens192
+      line: "{{ item.dest }} via {{ item.via }}"
+      create: yes
+    with_items: "{{ static_routes }}"
+    
+  handlers:
+    - name: Reiniciar red
+      service:
+        name: network
+        state: restarted

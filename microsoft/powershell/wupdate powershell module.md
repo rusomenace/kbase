@@ -1,13 +1,13 @@
 ## Modulo pswindowsupdate
 
 Para instalarlo ejecutar los siguientes comandos
-```
+```powershell
 Install-PackageProvider -Name NuGet -Force
 Install-Module pswindowsupdate -Force
 Enable-WURemoting
 ```
 ## Ejecutar una actualizacion full via PS con autoreinicio
-```
+```powershell
 Get-WindowsUpdate -AcceptAll -Install -AutoReboot
 ```
 ## Se debe crear una regla conforme las siguiente configuraciones:
@@ -22,14 +22,14 @@ New inbound firewall rule, custom:
 *En caso de dominio se debe habilitar solo en Domain*
 
 ## Powershell script para invocar remotamente una actualizacion con nombre de equipo
-```
+```powershell
 $RemoteServer = read-host "Server name"
 Get-WindowsUpdate -verbose -computer $RemoteServer -AcceptAll -Install -AutoReboot
 ```
 
 ## Script completo de instalacion de modulo de PSWindowsUpdate y actualizacion de repositorio de Nuget
 Este script se debe crear y voncular en una GPO para que aplique a todos los equipos
-```
+```powershell
 # Verifica existencia de repositorio nuget si no lo instala
 
 Set-ExecutionPolicy RemoteSigned -Force -Scope CurrentUser
@@ -91,7 +91,7 @@ El siguiente script fuerza la actualizacion mediante el modulo de PSWindows upda
 
 _Nota: Es obligatorio que la regla del firewall este presente para poder correr este comando_
 
-```
+```powershell
 $ServerList=Import-Csv "C:\tools\ServerList.csv"
 foreach ($Row in $ServerList){
 $RemoteServer=$Row.servername

@@ -1,0 +1,1 @@
+ansible reeplazar_el_host -m apt -a "update_cache=true upgrade=yes" --become --ask-become-pass

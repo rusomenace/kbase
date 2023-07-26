@@ -19,3 +19,8 @@ Write-Host -Foregroundcolor CYAN "INFO: Windows is activated"
 Stop-Process -name "*wscript*"
 Stop-Process -name "*wscript*"
 ```
+
+To review:
+Incluir la opción de batch mode en la invocación de cscript.exe
+Options:
+ //B         Batch mode: Suppresses script errors and prompts from displaying

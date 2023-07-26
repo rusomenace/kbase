@@ -6,7 +6,7 @@
   hosts: localhost
   become: yes
   vars:
-    hostname: ansibleubuntu1
+    hostname: ansiblerocky1
     ip_address: 192.168.101.49
     netmask: 255.255.255.0
     gateway: 192.168.101.255
