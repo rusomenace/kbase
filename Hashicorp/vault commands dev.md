@@ -79,9 +79,6 @@ docker-compose up -d
 
 ### V3 | Este ultimo dispara todo y suma request de user 1 y 2
 ```
-#!/bin/bash
-
-# Set the Vault API URL and token
 VAULT_URL="http://192.168.77.201:8200/v1"
 VAULT_TOKEN="root"
 
@@ -92,7 +89,6 @@ curl_output=$(curl -s --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/openlda
 # Use jq to extract the password field and save it to a variable
 export ADMIN_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
 
-
 ## Basic Users
 # User1
 curl_output=$(curl -s --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/openldap/data/users/basic/user1")
@@ -102,9 +98,12 @@ export USER1_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
 curl_output=$(curl -s --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/openldap/data/users/basic/user2")
 export USER2_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
 
+# pferrero
+curl_output=$(curl -s --header "X-Vault-Token: $VAULT_TOKEN" "$VAULT_URL/openldap/data/users/basic/pfererro")
+export PFERRERO_PASSWORD=$(echo "$curl_output" | jq -r '.data.data.password')
+
 # Run Docker Compose
 docker-compose up -d
-
 ```
 
 ### V4 | Preparando para TLS con certificado de tqcorp.dev
@@ -124,9 +123,9 @@ services:
       - LDAP_USERS=user1,user2,pferrero
       - LDAP_PASSWORDS=${USER1_PASSWORD},${USER2_PASSWORD},${PFERRERO_PASSWORD}
       - LDAP_ENABLE_TLS=yes  # Enable TLS
-      - LDAP_TLS_CERT_FILE=certs/ldap.crt  # Path inside the container for the server certificate
-      - LDAP_TLS_KEY_FILE=certs/ldap.key   # Path inside the container for the private key
-      - LDAP_TLS_CA_FILE=certs/the-ca.crt # File containing the CA of the certificate
+      - LDAP_TLS_CERT_FILE=certs/tqcorp.crt
+      - LDAP_TLS_KEY_FILE=certs/tqcorp.key
+      - LDAP_TLS_CA_FILE=certs/the-ca.crt
       - LDAP_LDAPS_PORT_NUMBER=1636
       - LDAP_TLS_VERIFY_CLIENT=try
     volumes:
@@ -137,4 +136,5 @@ services:
 volumes:
   openldap_data:
     driver: local
+
 ```
