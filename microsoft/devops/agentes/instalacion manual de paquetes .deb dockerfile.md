@@ -10,3 +10,8 @@ RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp
   && dpkg -i /tmp/libpng12.deb \
   && rm /tmp/libpng12.deb
 ```
+
+Dot Net SDK 8
+```
+https://learn.microsoft.com/en-us/dotnet/core/install/linux-debian
+```
