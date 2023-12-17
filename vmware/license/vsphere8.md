@@ -1,0 +1,8 @@
+vSphere Enterprise Plus:
+HG00K-03H8K-48929-8K1NP-3LUJ4
+
+vCenter Standard:
+4F282-0MLD2-M8869-T89G0-CF240
+
+vSAN Enterprise Plus:
+MG292-08L9K-48078-KJ372-27K20
