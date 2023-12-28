@@ -97,7 +97,10 @@ sudo pvcreate /dev/sdb1
 sudo lvcreate vg_veeam_u01 -L 100G -n lv_veeam_u01
 sudo lvcreate vg_veeam_u01 -L 99G -n lv_veeam_u01
 sudo lvdisplay vg_veeam_u01
-sudo mkfs.xfs /dev/vg_veeam_u01/lv_veeam_u01
+```
+Formatear en xfs con el bloque de 4k
+```
+sudo mkfs.xfs -b size=4096 /dev/vg_veeam_u01/lv_veeam_u01
 ```
 4. Montaindo el volumen
 ```
