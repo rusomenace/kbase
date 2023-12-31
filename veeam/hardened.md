@@ -119,5 +119,4 @@ sudo lsblk -o NAME,FSTYPE,UUID,SIZE,LABEL
 3. sudo nano /etc/fstab
 ```
 UUID=60258404-2861-4cb7-ada0-66eee675b66b /veeam_repo xfs rw,user,x-systemd.automount 0 0
-x-systemd.idle-timeout=300 0 0
 ```
