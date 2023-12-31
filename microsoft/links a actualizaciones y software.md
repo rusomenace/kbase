@@ -1,4 +1,4 @@
-# Actualziaciones de software
+# Actualizaciones de software
 Todos los links y referencia para verificar actualizaciones de software vigentes
 
 ## Azure devops
