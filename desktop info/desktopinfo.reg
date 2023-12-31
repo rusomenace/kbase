@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+"DesktopInfo"="C:\\Windows\\DesktopInfo\\DesktopInfo64.exe"
