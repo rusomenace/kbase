@@ -1,7 +1,7 @@
 Gui de Veeam: https://www.veeam.com/blog/installing-ubuntu-linux-veeam-hardened-repository.html
 
 
-# Instalacion y config iSCSI
+# Instalacion y config iSCSI (punto 1 virtual machine)
 1. Crear una maquina con ubuntu y editar el archivo vmx, agregar las siguientes entradas:
 uefi.secureBoot.enabled = "TRUE"
 uefi.allowAuthBypass = "TRUE"
@@ -11,46 +11,129 @@ La maquina tiene que tener bios EFI
 3. Durante la instalacion aprovechar y crear el BOND de interfaces
     - balancerr es lacp
     - active-backup es sin lacp
+  Ejemplo de un BOND de LACP:
+  ```
+  network:
+  bonds:
+    lacp-iscsi:
+      addresses:
+      - 10.210.251.11/24
+      interfaces:
+      - eno3
+      - ens2f1np1
+      nameservers:
+        addresses: []
+        search: []
+      parameters:
+        lacp-rate: slow
+        mode: 802.3ad
+        transmit-hash-policy: layer2
+    lacp-lan:
+      addresses:
+      - 10.210.150.30/24
+      interfaces:
+      - eno4
+      - ens2f0np0
+      nameservers:
+        addresses:
+        - 1.1.1.2
+        - 1.0.0.2
+        search: []
+      parameters:
+        lacp-rate: slow
+        mode: 802.3ad
+        transmit-hash-policy: layer2
+      routes:
+      - to: default
+        via: 10.210.150.1
+  ethernets:
+    eno3: {}
+    eno4: {}
+    ens2f0np0: {}
+    ens2f1np1: {}
+  version: 2
+  ```
 4. El resto de la instalacion corre de manera normal
 5. Verificar el estado de secure boot con el comando
 ```
 mokutil --sb-state
 ```
-6. La configuracion iscsi esta basado en esto 2 links:
-    - [Ubuntu 22.04 LTS : Configure iSCSI Initiator : Server World (server-world.info)](https://www.server-world.info/en/note?os=Ubuntu_22.04&p=iscsi&f=3)
-    - [https://benpiper.com/2014/12/creating-linux-lvm-logical-volume-iscsi-san/](https://benpiper.com/2014/12/creating-linux-lvm-logical-volume-iscsi-san/)
-
-7. Actualizar
+# Ajustar OS
+1. Actualizar e instalar
 ```
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt install tree
+sudo apt install ncdu
 ```
-8. Mostrar el IQN de iscsi
+# Inslacion de cockpit
+## Ubuntu 22.04
+```
+sudo apt update; sudo apt install cockpit
+sudo systemctl enable cockpit.socket
+sudo systemctl status cockpit
+```
+## Oracle Linux 8.5
+```
+yum install epel-release
+yum install cockpit
+systemctl enable --now cockpit.socket
+```
+## Cockpit fake adapter
+updates: Work around the "whilst offline" in Ubuntu & Debian · Issue #16963 · cockpit-project/cockpit · GitHub
+Frequently Asked Questions (FAQ) — Cockpit Project (cockpit-project.org)
+
+### Error message about being offline
+The software update page shows “packagekit cannot refresh cache whilst offline” on a Debian or Ubuntu system.
+
+Solution
+Create a placeholder file and network interface.
+
+### Create
+```
+sudo nano /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
+```
+with the contents:
+```
+[keyfile]
+unmanaged-devices=none
+```
+Set up a “dummy” network interface:
+```
+sudo nmcli con add type dummy con-name fake ifname fake0 ip4 1.2.3.4/24 gw4 1.2.3.1
+Reboot
+```
+# iSCSI
+
+1. La configuracion iscsi esta basado en esto 2 links:
+    - [Ubuntu 22.04 LTS : Configure iSCSI Initiator : Server World (server-world.info)](https://www.server-world.info/en/note?os=Ubuntu_22.04&p=iscsi&f=3)
+    - [https://benpiper.com/2014/12/creating-linux-lvm-logical-volume-iscsi-san/](https://benpiper.com/2014/12/creating-linux-lvm-logical-volume-iscsi-san/)
+
+2. Mostrar el IQN de iscsi
 ```
 sudo cat /etc/iscsi/initiatorname.iscsi
 ```
-9. Descubrir el target
+3. Descubrir el target
 ```
 sudo iscsiadm -m discovery -t sendtargets -p 192.168.78.247
 ```
-10. Confirma estado de descubrimiento
+4.  Confirma estado de descubrimiento
 ```
 sudo iscsiadm -m node -o show | grep -e node.name -e node.tpgt -e node.startup
 ```
-11. Iniciar sesion
+5.  Iniciar sesion
 ```
 sudo iscsiadm -m node --login -p 192.168.78.247
 ```
-12. Confirmar la conexion
+6.  Confirmar la conexion
 ```
 sudo iscsiadm -m session -o show
 ```
-13. Habilitar inicio automatico
+7.  Habilitar inicio automatico
 ```
 sudo iscsiadm -m node -p 192.168.78.247 -o update -n node.startup -v automatic
 ```
-14. Listar particiones (en este caso figura como sdb)
+8.  Listar particiones (en este caso figura como sdb)
 ```
 sudo cat /proc/partitions
 major minor  #blocks  name
