@@ -66,6 +66,32 @@ sudo apt-get upgrade
 sudo apt install tree
 sudo apt install ncdu
 ```
+### Cambiar NTP
+Editar el siguiente archivo:
+```
+sudo nano /etc/systemd/timesyncd.conf
+```
+Uncomment the NPT= line and define the server you want to be used instead of default:
+```
+[Time]
+NTP=some.ntp.server.com
+```
+To "audit" the time-synchronization events and verify the server that was contacted, use the following command:
+```
+cat /var/log/syslog | grep systemd-timesyncd
+```
+Force sync and service restart
+```
+sudo systemctl restart systemd-timesyncd
+```
+### cambiar timezone
+```
+sudo ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+```
+Restart the service
+```
+sudo dpkg-reconfigure -f noninteractive tzdata
+```
 # Inslacion de cockpit
 ## Ubuntu 22.04
 ```
@@ -150,6 +176,50 @@ major minor  #blocks  name
    8       16  104857600 sdb
 
 ```
+9. Mutipath es algo normal y que se puede dar cuando una cabina de alacenamiento tiene mas de un puerto de red de iscsi, en este caso la cabina tiene 4 interfaces de red accesibles.
+Verificar la instalacion de los modulos
+```
+sudo apt install open-iscsi
+sudo apt install multipath-tools
+```
+10. Iniciar sesion en cada portal iscsi
+```
+sudo iscsiadm -m node --login -p 10.210.240.12
+sudo iscsiadm -m node --login -p 10.210.240.13
+sudo iscsiadm -m node --login -p 10.210.240.14
+sudo iscsiadm -m node --login -p 10.210.240.15
+```
+11. Verificamos el estado de login
+```
+sudo iscsiadm -m session -o show
+tcp: [1] 10.210.251.15:3260,2 iqn.1992-08.com.netapp:2806.6d039ea000b1146a00000000654d1636 (non-flash)
+tcp: [2] 10.210.251.12:3260,1 iqn.1992-08.com.netapp:2806.6d039ea000b1146a00000000654d1636 (non-flash)
+tcp: [3] 10.210.251.13:3260,1 iqn.1992-08.com.netapp:2806.6d039ea000b1146a00000000654d1636 (non-flash)
+tcp: [4] 10.210.251.14:3260,2 iqn.1992-08.com.netapp:2806.6d039ea000b1146a00000000654d1636 (non-flash)
+
+```
+12. Inicio automatico de cada conexion iscsi
+```
+sudo iscsiadm -m node -p 10.210.240.12 -o update -n node.startup -v automatic
+sudo iscsiadm -m node -p 10.210.240.13 -o update -n node.startup -v automatic
+sudo iscsiadm -m node -p 10.210.240.14 -o update -n node.startup -v automatic
+sudo iscsiadm -m node -p 10.210.240.15 -o update -n node.startup -v automatic
+```
+13. Verificamos el estado de multipath
+```
+sudo multipath -ll
+mpatha (36d039ea000b119ac000000d465b8b748) dm-1 NETAPP,INF-01-00
+size=10T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+|-+- policy='service-time 0' prio=50 status=active
+| |- 23:0:0:0 sdf 8:80 active ready running
+| `- 20:0:0:0 sdc 8:32 active ready running
+`-+- policy='service-time 0' prio=10 status=enabled
+  |- 22:0:0:0 sde 8:64 active ready running
+  `- 21:0:0:0 sdd 8:48 active ready running
+```
+14. En el siguiente documento de ubuntu oficial se expresa que multiples paths generan multiples volumenes que pueden aparecer como sde, sdf, sdg, etc. Todas esas unidades representan el path de acceso y cuando se ejecuta 
+
+    
 # Particionado
 1. Ejecutamos para ver particion
 ```
@@ -174,11 +244,51 @@ t
 verificamos con "p" la configuracion
 w para guardar
 ```
+### En el caso de volumenes de mas de 2TB hay que hacerlo de otra manera y es usando GPARTED. Este ejemplo asume que el disco es de 10TB. La otra particularidad del ejemplo es que se usa un volumen multipath iscsi de una cabina e-series
+
+```
+sudo parted /dev/mapper/mpatha
+p chequea particiones existentes
+mklabel gpt
+unit TB
+mkpart primary 0 10
+```
+```
+p imprime el resultado
+
+GNU Parted 3.4
+Using /dev/mapper/mpatha
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) p
+Model: Linux device-mapper (multipath) (dm)
+Disk /dev/mapper/mpatha: 11.0TB
+Sector size (logical/physical): 512B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name     Flags
+ 1      1049kB  11.0TB  11.0TB               primary
+
+```
+El resultado cuando se consulta con el comando sudo **fdisk -l** muestra al final de todo el volumen mpatha y el dispositivo particionado
+
+```
+Disk /dev/mapper/mpatha: 10 TiB, 10995116277760 bytes, 21474836480 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: B8A08D5A-C09E-409B-87A6-4BDC29872004
+
+Device                   Start         End     Sectors Size Type
+/dev/mapper/mpatha-part1  2048 21474834431 21474832384  10T Linux filesystem
+```
+
 3. Creacion de volumen fisico
 ```
 sudo pvcreate /dev/sdb1
+sudo vgcreate vg_veeam_u01 /dev/sdb1
 sudo lvcreate vg_veeam_u01 -L 100G -n lv_veeam_u01
-sudo lvcreate vg_veeam_u01 -L 99G -n lv_veeam_u01
 sudo lvdisplay vg_veeam_u01
 ```
 Formatear en xfs con el bloque de 4k
@@ -187,6 +297,7 @@ sudo mkfs.xfs -b size=4096 /dev/vg_veeam_u01/lv_veeam_u01
 ```
 4. Montaindo el volumen
 ```
+sudo mkdir veeam_repo1
 sudo mount /dev/vg_veeam_u01/lv_veeam_u01 /veeam_repo/
 ```
 5. Se otorga pertenencia del repo
@@ -198,7 +309,7 @@ sudo chown -cR veeam:veeam /veeam_repo/
 ```
 sudo cp /etc/fstab /etc/fstab.old
 ```
-2. Obtener el UUID de la aprticion
+2. Obtener el UUID de la particion
 ```
 sudo lsblk -o NAME,FSTYPE,UUID,SIZE,LABEL
 ```
