@@ -129,8 +129,12 @@ user2@example.com     ALL=(ALL)   ALL
 ```
 
 ## Add group
+
+Add the group you see above to the sudoers file. We can use sudoers.d directory to avoid changing the main sudoers file (e.g. to avoid merge if distribution upgrade changes it).
 ```
-%group1@example.com     ALL=(ALL)   ALL
+$ visudo -f /etc/sudoers.d/DomainAdmins
+# Add this line:
+"%MYDOMAIN\Domain Admins" ALL=(ALL) ALL
 ```
 
 ## Add group with two or three names.
