@@ -1,10 +1,15 @@
 # Postfix
 
+Se utiliza como base el repositorio de https://github.com/juanluisbaptiste/docker-postfix
+Se hace un git pull y se construye la imagen como postfix/postfix:latest
+La implementacion hace uso de un archivo .env, no sirve subir los archivos main.cf y master.cf
+Se utiliza docker-compose para iniciar y apagar el stack de servicio con nombre de proyecto
+
 ## La configuracion de postfix existe en
 ```
 /etc/postfix/main.cf
 ```
-## Ejemplo de postif relax productivo
+## Ejemplo de postif real productivo
 ```
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
@@ -67,7 +72,7 @@ transport_maps = texthash:/etc/postfix/transport
 Then edit /etc/postfix/transport with your favorite editor and add this:
 ```
 tqcorp.com smtp:
-rocker.com.ar smtp:
+rochel.com.ar smtp:
 * error:only mail to @tqcorp.com & @rochel.com.ar will be delivered
 ```
 This will bounce every mail with recipients other than *@example.com. If you need to be able to change the transport_map on the fly use hash instead of texthash, but you have to use postmap on the file once you changed it to update the corresponding .db file and so postfix notices it has changed. If you don't want to bounce other mails use this instead:
