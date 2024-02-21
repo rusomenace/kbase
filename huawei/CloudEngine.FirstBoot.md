@@ -67,3 +67,7 @@ ip route-static 0.0.0.0 0.0.0.0 10.96.69.1
 ```
 commit
 ```
+## Des el prompt < > ejecutar
+```
+save
+```

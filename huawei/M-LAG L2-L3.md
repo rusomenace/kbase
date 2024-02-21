@@ -1,78 +1,101 @@
-### Mostrar version de sistema operativo
+Se crea un port channel para Heartbeat con IP 2 para switch 1 e IP 3 para el switch 2
+
+Se deberan asociar interfaces, es posible usar cables DAC de 10Gbps
 ```
-display current-configuration
-!Software Version V300R022C00SPC200
+interface Eth-Trunk0
+undo portswitch
+description M-LAG_Heartbeat
+ipv6 enable
+ip address 10.254.120.2 255.255.255.0
+m-lag unpaired-port reserved
 ```
-### Se define el timezone (Madrid-Barcelona)
-```
-clock timezone UTC add 01:00:00
-```
-### Nombre del switch
-```
-sysname ESBCSWDTC01
-```
-### Grupo de DFS para M-LAG, el switch 2 es igual pero tiene prioridad 120
-### Las direcciones IP corresponden a las interfaces Meth 0/0/0 de management OOB, "no es ideal"
-```
-dfs-group 1
- authentication-mode hmac-sha256 password %+%##!!!!!!!!!"!!!!"!!!!*!!!!2hdyF"u+y=u:;#5*N1x#+)GoAjYYbVeZe(>!!!!!2jp5!!!!!!>!!!!lE7XA{3x*2THdiNXD6pUwj~PM@Vo!0"@o*NY`LwU%+%#
- dual-active detection source ip 10.210.230.18 peer 10.210.230.19
- priority 150
-```
-### Configuracion de NTP apuntado al Domain Controller
-```
-ntp unicast-peer 10.210.160.11
-ntp unicast-server 10.210.160.11
-```
-### Estas son todas las vlans creadas, por algun motivo se ve en 2 lineas
-```
-vlan batch 4 100 140 150 to 151 160 170 180 190 230 240
-vlan batch 250 to 251
-```
-### Configuraciones de STP en ambos switches de M-LAG L2
-```
-stp bridge-address 00e0-fc12-3458
-stp instance 0 root primary
-ipv4-family
-```
-### Interfaz de gestion y de heart beat de M-LAG
-```
-interface MEth0/0/0
- description OOB_Gestion
- ip address 10.210.230.18 255.255.255.0
-```
-### Port trunk para enlazar ambos switches
+Se crea un port channel para el Peer-Link
+
+Se pueden utilizar las intefaces de SQFP+ de 100Gbps
 ```
 interface Eth-Trunk1
- description M-LAG
- stp disable
- mode lacp-static
- peer-link 1
+description M-LAG_Peering
+stp disable
+mode lacp-static
+peer-link 1
 ```
-### Port trunk clasico de conexion contra un servidor usando LACP
+Comandos adicionales
 ```
-interface Eth-Trunk5
- description Po5_ESBCNTVEEAM01-NIC1
- port default vlan 150
- stp edged-port enable
- mode lacp-dynamic
- dfs-group 1 m-lag 1
- ```
- #### *(El numero de m-lag es unico por grupo dfs, se recomienda usar el mismo numero del Po)*
+stp bridge-address 00e0-fc12-3458
+stp mode rstp
+stp v-stp enable
+stp instance 0 root primary
+stp bpdu-protection
+stp tc-protection
+```
+Se crea un grupo dfs, en el ejemplo la IP 2 corresponde al switch 1 y la IP 3 al switch 2, se debe invertir las IPs al confgiurar el switch 2
 
-### Configuracion clasica de una boca de red sin LAG o LACP con tag de VLANs multiples
+La priorida del switch 1 es 150 y la del switch 2 es 120
 ```
-interface 10GE1/0/21
- description ESBCESXI01-vmnic0
- port link-type trunk
- port trunk allow-pass vlan 4 100 140 150 to 151 160 170 180 250
+dfs-group 1
+authentication-mode hmac-sha256 password ClaveSuperFuerte
+dual-active detection source ip 10.254.120.2 peer 10.254.120.3
+m-lag up-delay 240 auto-recovery interval 10
+priority 150
 ```
-### Ruteos estaticos
-```
-ip route-static 10.210.230.18 255.255.255.255 10.210.230.1
-return
-```
+Ejemplo de un LAG clasico sin LACP con switches fortinet
 
-Ref:
-- M-LAG L2: https://support.huawei.com/hedex/hdx.do?docid=EDOC1100278118&id=EN-US_TASK_0000001171488291
-- M-LAG L3: https://support.huawei.com/hedex/hdx.do?docid=EDOC1100278118&id=EN-US_TASK_0000001171568181
+**Es importante tener en cuenta que el numero de m-lag es unico por grupo de dfs y por orden siempre se utiliza el numero asociado al LAG**
+```
+interface Eth-Trunk2
+description trunk-forti
+port link-type trunk
+undo port trunk allow-pass vlan 1
+port trunk allow-pass vlan 4 100 140 150 160 170 180 200 250 2000
+dfs-group 1 m-lag 2
+```
+Ejemplo de un LAG LACP de cabina NetApp
+```
+interface Eth-Trunk3
+description A150_PROD_01
+port link-type trunk
+undo port trunk allow-pass vlan 1
+port trunk allow-pass vlan 240 250 to 251 2000
+stp edged-port enable
+mode lacp-dynamic
+dfs-group 1 m-lag 3
+```
+Ejemplo de un LAG LACP modo access con servidor Windows
+```
+interface Eth-Trunk6
+description ESBCLXVEEAM01_LAN
+port default vlan 150
+stp edged-port enable
+mode lacp-dynamic
+dfs-group 1 m-lag 6
+```
+Salvar la config desde el prompt < >
+```
+save
+```
+Con el comando display-startup se puede verificar cual es el archivo de configuracion que se utilizara para el siguiente boot
+```
+<SWITCH>display startup
+MainBoard:
+Configured startup system software:        flash:/CE6820_V300R022C00SPC200.cc
+Startup system software:                   flash:/CE6820_V300R022C00SPC200.cc
+Next startup system software:              flash:/CE6820_V300R022C00SPC200.cc
+Startup saved-configuration file:          flash:/vrpcfg_bck.zip
+Next startup saved-configuration file:     flash:/vrpcfg_bck.zip
+Startup paf file:                          default
+Next startup paf file:                     default
+Startup patch package:                     flash:/CE6820_V300R022SPH121.PAT
+Next startup patch package:                flash:/CE6820_V300R022SPH121.PAT
+Startup feature software:                  NULL
+Next startup feature software:             NULL
+```
+Para certificar de que los cambios se han respaldados se puede verificar fecha y hora de modificacion del archivo con el comando **dir**
+```
+<SWITCH>dir flash:/vrpcfg_bck.zip
+Directory of flash:/
+
+  Idx  Attr     Size(Byte)  Date        Time       FileName
+    0  -rw-          2,950  Feb 19 2024 10:13:56   vrpcfg_bck.zip
+
+1,014,632 KB total (747,660 KB free)
+```
