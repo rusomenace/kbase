@@ -426,4 +426,7 @@ root@esbclxveeam01:~# sudo lvextend -L +2T /dev/mapper/vg_veeam_u01-lv_veeam_u01
   Size of logical volume vg_veeam_u01/lv_veeam_u01 changed from <20.00 TiB (5242879 extents) to <22.00 TiB (5767167 extents).
   Logical volume vg_veeam_u01/lv_veeam_u01 successfully resized.
 ```
-
+### Incrementamos el filesystem con xfs growth
+```
+sudo xfs_growfs /dev/mapper/vg_veeam_u01-lv_veeam_u01
+```
