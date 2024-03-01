@@ -317,3 +317,111 @@ sudo lsblk -o NAME,FSTYPE,UUID,SIZE,LABEL
 ```
 UUID=60258404-2861-4cb7-ada0-66eee675b66b /veeam_repo xfs rw,user,x-systemd.automount 0 0
 ```
+
+# Incrementar tamaño de discos iSCSI
+
+ndM5fTRc*yHDDqP7
+
+## Aumentar el espacio en disco desde cabina
+
+### Muestra estado actual del volumen logico el tamaño no ha cambiado todavia
+df -h
+
+### Este comando muestra los volumenes que tambien muestran al final los valores sin incrementar
+fdisk -l
+
+/dev/sdd1   2048 42949672926 42949670879  20T Linux filesystem
+
+Disk /dev/mapper/mpatha: 20 TiB, 21990232555520 bytes, 42949672960 sectors
+
+/dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
+
+Todo a 20TB
+
+### Reiniciar el servidor y entrar como root sudo -i y ejecutar
+fdisk -l
+Debera mostrar todos los discos en el nuevo valor, en este caso 22T pero el valor del Device se mantiene en 20T
+
+Disk /dev/sdc: 22 TiB, 24189255811072 bytes, 47244640256 sectors
+Disk model: INF-01-00
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: E2FFC81B-389E-4266-95CB-029B0D0265C8
+
+Device     Start         End     Sectors Size Type
+/dev/sdc1   2048 42949672926 42949670879  20T Linux filesystem
+The backup GPT table is not on the end of the device.
+
+
+Disk /dev/mapper/mpatha: 22 TiB, 24189255811072 bytes, 47244640256 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: E2FFC81B-389E-4266-95CB-029B0D0265C8
+
+Device                   Start         End     Sectors Size Type
+/dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
+
+
+Disk /dev/mapper/vg_veeam_u01-lv_veeam_u01: 20 TiB, 21990228361216 bytes, 42949664768 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+
+Hay una advertencia que dice: The backup GPT table is not on the end of the device. y eso indica que el disco ha crecido pero necesita expandirse
+
+### Particionamos ejecutando el comando sudo parted /dev/mapper/mpatha, al seleccionar la opcion P automaticamente nos indica que tenemos que corregir la particion GPT a su maximo y el resultado final son 22T anteriormente 20T
+```
+root@esbclxveeam01:~# sudo parted /dev/mapper/mpatha
+GNU Parted 3.4
+Using /dev/mapper/mpatha
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted) p
+Warning: Not all of the space available to /dev/mapper/mpatha appears to be used, you can fix the GPT to use all of the space (an extra 4294967296 blocks) or continue with the current setting?
+Fix/Ignore? Fix
+Model: Linux device-mapper (multipath) (dm)
+Disk /dev/mapper/mpatha: 24.2TB
+Sector size (logical/physical): 512B/4096B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name     Flags
+ 1      1049kB  22.0TB  22.0TB               primary
+```
+### Reiniciar (se puede ovbiar con un rescan iscsi
+
+### Nuevamente ejecutamos ```fdisk-l``` y vamos a ver como el resultado va a dar 22T en todos los casos pero todavia no en lo que respecta a "device"
+
+### Se hace un resize del volumen fisico
+```
+root@esbclxveeam01:~# sudo pvresize /dev/mapper/mpatha-part1
+  Physical volume "/dev/mapper/mpatha-part1" changed
+  1 physical volume(s) resized or updated / 0 physical volume(s) not resized
+```
+## Expandimos el volumen logico
+```
+sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+```
+@@@
+Aca hay una laguna que no se que es y hace que el disco "Device" pase de ver 20T a 22T /dev/mapper/mpatha-part1  2048 47244640222 47244638175  22T Linux filesystem
+@@@
+
+### Ejecutar este comando para cambiar el tamaño de la particion
+root@esbclxveeam01:~# sudo pvresize /dev/mapper/mpatha-part1
+  Physical volume "/dev/mapper/mpatha-part1" changed
+  1 physical volume(s) resized or updated / 0 physical volume(s) not resized
+
+### Mostrar el espacio libre
+```
+root@esbclxveeam01:~# sudo vgdisplay vg_veeam_u01
+```
+### Extender la aprticion
+```
+root@esbclxveeam01:~# sudo lvextend -L +2T /dev/mapper/vg_veeam_u01-lv_veeam_u01
+  Size of logical volume vg_veeam_u01/lv_veeam_u01 changed from <20.00 TiB (5242879 extents) to <22.00 TiB (5767167 extents).
+  Logical volume vg_veeam_u01/lv_veeam_u01 successfully resized.
+```
+
