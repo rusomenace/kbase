@@ -325,9 +325,11 @@ ndM5fTRc*yHDDqP7
 ## Aumentar el espacio en disco desde cabina
 
 ### Muestra estado actual del volumen logico el tamaño no ha cambiado todavia
+```
 df -h
-
+```
 ### Este comando muestra los volumenes que tambien muestran al final los valores sin incrementar
+```
 fdisk -l
 
 /dev/sdd1   2048 42949672926 42949670879  20T Linux filesystem
@@ -335,13 +337,13 @@ fdisk -l
 Disk /dev/mapper/mpatha: 20 TiB, 21990232555520 bytes, 42949672960 sectors
 
 /dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
-
+```
 Todo a 20TB
 
 ### Reiniciar el servidor y entrar como root sudo -i y ejecutar
 fdisk -l
 Debera mostrar todos los discos en el nuevo valor, en este caso 22T pero el valor del Device se mantiene en 20T
-
+```
 Disk /dev/sdc: 22 TiB, 24189255811072 bytes, 47244640256 sectors
 Disk model: INF-01-00
 Units: sectors of 1 * 512 = 512 bytes
@@ -370,7 +372,7 @@ Disk /dev/mapper/vg_veeam_u01-lv_veeam_u01: 20 TiB, 21990228361216 bytes, 429496
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 4096 bytes
 I/O size (minimum/optimal): 4096 bytes / 4096 bytes
-
+```
 Hay una advertencia que dice: The backup GPT table is not on the end of the device. y eso indica que el disco ha crecido pero necesita expandirse
 
 ### Particionamos ejecutando el comando sudo parted /dev/mapper/mpatha, al seleccionar la opcion P automaticamente nos indica que tenemos que corregir la particion GPT a su maximo y el resultado final son 22T anteriormente 20T
