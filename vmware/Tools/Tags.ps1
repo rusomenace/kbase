@@ -2,7 +2,6 @@ $menu=@"
 1 Get all VMs tags
 2 Get specific VMs with tags
 3 Get VMs with no tags
-4 s
 
 Q Quit
 
@@ -16,7 +15,7 @@ $r = Read-Host $menu
 
 Switch ($r) {
 "1"	{	
-    $vmTags = Get-VM | Get-TagAssignment
+    $vmTags = Get-VM | Get-TagAssignment | Select-Object -Property Entity, Tag
     $vmTags
 	}
 "2" {
@@ -26,8 +25,8 @@ Switch ($r) {
     Get-TagAssignment | Where-Object {$_.Tag -like "$tag"}
     }
 "3" {
-    $VMnoTag = Get-VM | Where-Object{(Get-TagAssignment $_) -eq $null}
-    $VMnoTag | Where-Object  {($_.name -Match "TQARSV*") -and ($_.name -ne "TQARSVW19DC03") -and ($_.name -ne "TQARSVW19UBQT01")}  | Select-Object -Property Name, Notes
+    $VMnoTag = Get-VM | Where-Object { -not (Get-TagAssignment $_) }
+    $VMnoTag | Select-Object -Property Name, Notes
     }
 "Q" {
     Write-Host "Quitting" -ForegroundColor DarkCyan
