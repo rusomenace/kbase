@@ -320,9 +320,10 @@ UUID=60258404-2861-4cb7-ada0-66eee675b66b /veeam_repo xfs rw,user,x-systemd.auto
 
 # Incrementar tamaño de discos iSCSI
 
-1. Aumentar el espacio en disco desde cabina
+1. Aumentar el espacio en disco desde cabina al tama;o deseado, en esta documentacion pasamos de 20T a 22T
 
 2. Muestra estado actual del volumen logico el tamaño no ha cambiado todavia
+El punto de montura se ve como /veeam_repo
 ```
 df -h
 ```
@@ -343,11 +344,6 @@ Todo a 20TB
 Debera mostrar todos los discos en el nuevo valor, en este caso 22T pero el valor del Device se mantiene en 20T
 ```
 Disk /dev/mapper/mpatha: 22 TiB, 24189255811072 bytes, 47244640256 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 4096 bytes
-I/O size (minimum/optimal): 4096 bytes / 4096 bytes
-Disklabel type: gpt
-Disk identifier: E2FFC81B-389E-4266-95CB-029B0D0265C8
 
 Device                   Start         End     Sectors Size Type
 /dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
@@ -366,11 +362,11 @@ resizepart 1 100% (Aunque de error si se vuelve a ejecutar print free se ve como
 ```
 6. Reiniciar el servidor
 
-7. Nuevamente ejecutamos ```fdisk-l``` y vamos a ver como el resultado va a dar 22T en todos los casos pero todavia no en lo que respecta a "device"
+7. Nuevamente ejecutamos ```fdisk-l``` y vamos a ver como el resultado va a dar 22T en todos los casos pero todavia no en lo que respecta a **"device"**
 
 8. Se hace un resize del volumen fisico
 ```
-root@esbclxveeam01:~# sudo pvresize /dev/mapper/mpatha-part1
+sudo pvresize /dev/mapper/mpatha-part1
 ```
 9. Expandimos el volumen logico
 ```
