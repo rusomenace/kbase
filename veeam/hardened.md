@@ -376,23 +376,19 @@ root@esbclxveeam01:~# sudo pvresize /dev/mapper/mpatha-part1
 ```
 sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
 ```
-@@@
-Aca hay una laguna que no se que es y hace que el disco "Device" pase de ver 20T a 22T /dev/mapper/mpatha-part1  2048 47244640222 47244638175  22T Linux filesystem
-@@@
-
-10. Ejecutar este comando para cambiar el tamaño de la particion
+1.  Ejecutar este comando para cambiar el tamaño de la particion
 ```
 sudo pvresize /dev/mapper/mpatha-part1
 ```
-11. Mostrar el espacio libre
+1.  Mostrar el espacio libre
 ```
 sudo vgdisplay vg_veeam_u01
 ```
-12. Extender la aprticion
+1.  Extender la aprticion
 ```
 sudo lvextend -L +2T /dev/mapper/vg_veeam_u01-lv_veeam_u01
 ```
-13. Incrementamos el filesystem con xfs growth
+1.  Incrementamos el filesystem con xfs growth
 ```
 sudo xfs_growfs /dev/mapper/vg_veeam_u01-lv_veeam_u01
 ```
