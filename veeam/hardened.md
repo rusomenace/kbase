@@ -372,19 +372,23 @@ sudo pvresize /dev/mapper/mpatha-part1
 ```
 sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
 ```
-1.  Ejecutar este comando para cambiar el tamaño de la particion
+10.  Ejecutar este comando para cambiar el tamaño de la particion
 ```
 sudo pvresize /dev/mapper/mpatha-part1
 ```
-1.  Mostrar el espacio libre
+11.  Mostrar el espacio libre
 ```
 sudo vgdisplay vg_veeam_u01
 ```
-1.  Extender la aprticion
+12.  Extender la aprticion
 ```
 sudo lvextend -L +2T /dev/mapper/vg_veeam_u01-lv_veeam_u01
 ```
-1.  Incrementamos el filesystem con xfs growth
+13.  Incrementamos el filesystem con xfs growth
 ```
 sudo xfs_growfs /dev/mapper/vg_veeam_u01-lv_veeam_u01
+```
+14. Ejecutar el siguiente comando para visualizar el cambio en el volumen
+```
+df -h
 ```
