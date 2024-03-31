@@ -317,3 +317,78 @@ sudo lsblk -o NAME,FSTYPE,UUID,SIZE,LABEL
 ```
 UUID=60258404-2861-4cb7-ada0-66eee675b66b /veeam_repo xfs rw,user,x-systemd.automount 0 0
 ```
+
+# Incrementar tamaño de discos iSCSI
+
+1. Aumentar el espacio en disco desde cabina al tama;o deseado, en esta documentacion pasamos de 20T a 22T
+
+2. Muestra estado actual del volumen logico el tamaño no ha cambiado todavia
+El punto de montura se ve como /veeam_repo
+```
+df -h
+```
+3. Este comando muestra los volumenes que tambien muestran al final los valores sin incrementar
+```
+fdisk -l
+
+/dev/sdd1   2048 42949672926 42949670879  20T Linux filesystem
+
+Disk /dev/mapper/mpatha: 20 TiB, 21990232555520 bytes, 42949672960 sectors
+
+/dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
+```
+Todo a 20TB
+
+4. Reiniciar el servidor y entrar como root ```sudo -i``` y ejecutar
+```fdisk -l```
+Debera mostrar todos los discos en el nuevo valor, en este caso 22T pero el valor del Device se mantiene en 20T
+```
+Disk /dev/mapper/mpatha: 22 TiB, 24189255811072 bytes, 47244640256 sectors
+
+Device                   Start         End     Sectors Size Type
+/dev/mapper/mpatha-part1  2048 42949672926 42949670879  20T Linux filesystem
+
+
+Disk /dev/mapper/vg_veeam_u01-lv_veeam_u01: 20 TiB, 21990228361216 bytes, 42949664768 sectors
+```
+***Hay una advertencia que dice: The backup GPT table is not on the end of the device. y eso indica que el disco ha crecido pero necesita expandirse***
+
+5. Particionamos ejecutando el comando sudo ```parted /dev/mapper/mpatha```, al seleccionar la opcion P automaticamente nos indica que tenemos que corregir la particion GPT a su maximo y el resultado final son 22T anteriormente 20T
+```
+sudo parted /dev/mapper/mpatha
+p (opcion)
+print free (se visualiza el espacio libre a asignar)
+resizepart 1 100% (Aunque de error si se vuelve a ejecutar print free se ve como se expandio)
+```
+6. Reiniciar el servidor
+
+7. Nuevamente ejecutamos ```fdisk-l``` y vamos a ver como el resultado va a dar 22T en todos los casos pero todavia no en lo que respecta a **"device"**
+
+8. Se hace un resize del volumen fisico
+```
+sudo pvresize /dev/mapper/mpatha-part1
+```
+9. Expandimos el volumen logico
+```
+sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+```
+10.  Ejecutar este comando para cambiar el tamaño de la particion
+```
+sudo pvresize /dev/mapper/mpatha-part1
+```
+11.  Mostrar el espacio libre
+```
+sudo vgdisplay vg_veeam_u01
+```
+12.  Extender la aprticion
+```
+sudo lvextend -L +2T /dev/mapper/vg_veeam_u01-lv_veeam_u01
+```
+13.  Incrementamos el filesystem con xfs growth
+```
+sudo xfs_growfs /dev/mapper/vg_veeam_u01-lv_veeam_u01
+```
+14. Ejecutar el siguiente comando para visualizar el cambio en el volumen
+```
+df -h
+```

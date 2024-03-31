@@ -1,0 +1,1 @@
+Get-VM | Get-HardDisk | Select-Object Parent, Name, @{Name="DatastoreFolder"; Expression={$_.FileName}}

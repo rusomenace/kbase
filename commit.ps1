@@ -10,7 +10,7 @@ Function Get-ProjectType {
     6 - Perf: Un cambio de codigo que mejora el rendimiento
     7 - Refactor: Un cambio de codigo que no corrige un error ni agrega una caracteristica
     8 - Style: Cambios que no afectan el significado del codigo
-    9 - Test: Adicion de pruebas faltantes o correccion de pruebas existentes
+    9 - Update: Actualizar cambios
     
     Choose option"
     Switch ($type){

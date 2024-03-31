@@ -1,8 +1,14 @@
-### Mostrar version de sistema operativo
+Se crea un port channel para Heartbeat con IP .2 para switch 1 e IP .3 para el switch 2
+
+Se deberan asociar interfaces, es posible usar cables DAC de 10Gbps
 ```
-display current-configuration
-!Software Version V300R022C00SPC200
+interface Eth-Trunk0
+undo portswitch
+description M-LAG_Heartbeat
+ip address 10.254.120.2 255.255.255.0
+m-lag unpaired-port reserved
 ```
+<<<<<<< HEAD
 ### Se define el timezone (Madrid-Barcelona)
 ```
 clock timezone UTC add 01:00:00
@@ -43,37 +49,97 @@ interface MEth0/0/0
  ip address 10.210.230.18 255.255.255.0
 ```
 ### Port trunk para enlazar ambos switches
+=======
+Se crea un port channel para el Peer-Link
+
+Se pueden utilizar las intefaces de SQFP+ de 100Gbps
+>>>>>>> 5cfff7dda610cdd1002bff0aed0d600d9f642297
 ```
 interface Eth-Trunk1
- description M-LAG
- stp disable
- mode lacp-static
- peer-link 1
+description M-LAG_Peering
+stp disable
+mode lacp-static
+peer-link 1
 ```
-### Port trunk clasico de conexion contra un servidor usando LACP
+Comandos adicionales a ejecutar en system-view (la mac address es inventada)
 ```
-interface Eth-Trunk5
- description Po5_ESBCNTVEEAM01-NIC1
- port default vlan 150
- stp edged-port enable
- mode lacp-dynamic
- dfs-group 1 m-lag 1
- ```
- #### *(El numero de m-lag es unico por grupo dfs, se recomienda usar el mismo numero del Po)*
+stp bridge-address 00e0-fc12-3458
+stp mode rstp
+stp v-stp enable
+stp instance 0 root primary
+stp bpdu-protection
+stp tc-protection
+```
+Se crea un grupo DFS, en el ejemplo la IP .2 corresponde al switch 1 y la IP .3 al switch 2, se debe invertir las IPs al configurar el switch 2
 
-### Configuracion clasica de una boca de red sin LAG o LACP con tag de VLANs multiples
+La priorida del switch 1 es 150 y la del switch 2 es 120
 ```
-interface 10GE1/0/21
- description ESBCESXI01-vmnic0
- port link-type trunk
- port trunk allow-pass vlan 4 100 140 150 to 151 160 170 180 250
+dfs-group 1
+authentication-mode hmac-sha256 password ClaveSuperFuerte
+dual-active detection source ip 10.254.120.2 peer 10.254.120.3
+m-lag up-delay 240 auto-recovery interval 10
+priority 150
 ```
-### Ruteos estaticos
+Ejemplo de un LAG clasico sin LACP con switches fortinet
+
+**Es importante tener en cuenta que el numero de m-lag es unico por grupo de dfs y por orden siempre se utiliza el numero asociado al LAG, en estew caso el Trunk es el 2 y el m-lag es 2**
 ```
-ip route-static 10.210.230.18 255.255.255.255 10.210.230.1
-return
+interface Eth-Trunk2
+description trunk-forti
+port link-type trunk
+undo port trunk allow-pass vlan 1
+port trunk allow-pass vlan 4 100 140 150 160 170 180 200 250 2000
+dfs-group 1 m-lag 2
+```
+Ejemplo de un LAG LACP de cabina NetApp
+```
+interface Eth-Trunk3
+description A150_PROD_01
+port link-type trunk
+undo port trunk allow-pass vlan 1
+port trunk allow-pass vlan 240 250 to 251 2000
+stp edged-port enable
+mode lacp-dynamic
+dfs-group 1 m-lag 3
+```
+Ejemplo de un LAG LACP modo access con servidor Windows
+```
+interface Eth-Trunk6
+description ESBCLXVEEAM01_LAN
+port default vlan 150
+stp edged-port enable
+mode lacp-dynamic
+dfs-group 1 m-lag 6
+```
+Salvar la config desde el prompt < >
+```
+save
+```
+Con el comando display-startup se puede verificar cual es el archivo de configuracion que se utilizara para el siguiente boot
+```
+<SWITCH>display startup
+Startup saved-configuration file:          flash:/vrpcfg_bck.zip
+Next startup saved-configuration file:     flash:/vrpcfg_bck.zip
+```
+Para certificar de que los cambios se han respaldados se puede verificar fecha y hora de modificacion del archivo con el comando **dir**
+```
+<SWITCH>dir flash:/vrpcfg_bck.zip
+Directory of flash:/
+
+  Idx  Attr     Size(Byte)  Date        Time       FileName
+    0  -rw-          2,950  Feb 19 2024 10:13:56   vrpcfg_bck.zip
+
+1,014,632 KB total (747,660 KB free)
+```
+Comandos de referencia para verificar el estado del m-lag
+```
+display dfs-group 1 m-lag
+display dfs-group 1 m-lag brief
+display dfs-group 1 heartbeat
+display dfs-group 1 peer-link
+display dfs-group 1 node (x) m-lag
 ```
 
 Ref:
-- M-LAG L2: https://support.huawei.com/hedex/hdx.do?docid=EDOC1100278118&id=EN-US_TASK_0000001171488291
-- M-LAG L3: https://support.huawei.com/hedex/hdx.do?docid=EDOC1100278118&id=EN-US_TASK_0000001171568181
+- https://support.huawei.com/hedex/hdx.do?docid=EDOC1100278118&id=EN-US_TASK_0000001171488291
+- https://support.huawei.com/enterprise/en/doc/EDOC1000137639/75f81d1f/configuring-leaf-nodes (PUNTO 6)

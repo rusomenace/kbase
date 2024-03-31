@@ -1,0 +1,3 @@
+- En cabinas de bloque se usa la configuracion de Direct storage access, es valido para NFS?
+- Los logs son basicos o inexistentes, como se pueden ver?
+- Los powershell scripts fallan, modo administrador no funciona y hay que llamar un BAT para que ejecute un PS. No se puede ejecutar PS que ejecuten convert-from-security-string
