@@ -11,8 +11,9 @@ clock timezone UTC add 01:00:00
 ```
 sysname ESBCSWDTC01
 ```
-### Grupo de DFS para M-LAG, el switch 2 es igual pero tiene prioridad 120
-### Las direcciones IP corresponden a las interfaces Meth 0/0/0 de management OOB, "no es ideal"
+Grupo de DFS para M-LAG, el switch 2 es igual pero tiene prioridad 120
+Las direcciones IP corresponden a las interfaces Meth 0/0/0 de management OOB, "no es ideal"
+En este caso se puede armar un port trunk exclusivo para el 
 ```
 dfs-group 1
  authentication-mode hmac-sha256 password %+%##!!!!!!!!!"!!!!"!!!!*!!!!2hdyF"u+y=u:;#5*N1x#+)GoAjYYbVeZe(>!!!!!2jp5!!!!!!>!!!!lE7XA{3x*2THdiNXD6pUwj~PM@Vo!0"@o*NY`LwU%+%#
