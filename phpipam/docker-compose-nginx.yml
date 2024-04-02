@@ -3,8 +3,6 @@ version: '3'
 services:
   phpipam-web:
     image: phpipam/phpipam-www:latest
-#    ports:
-#      - "80:80"
     environment:
       - TZ=Europe/Madrid
       - IPAM_DATABASE_HOST=phpipam-mariadb
@@ -44,11 +42,14 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "443:443"  # Expose port 443 for HTTPS
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./certs:/etc/nginx/certs:ro
     restart: unless-stopped
+    depends_on:
+      - phpipam-web
 
 volumes:
   phpipam-db-data:
