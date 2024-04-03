@@ -45,14 +45,17 @@ https://danteict.nl/2021/03/install-and-use-admt-3-2-on-windows-server-2019/
 
 7. Instalar SQL Express en el server de ADMNT, es necesario para la migracion.
 
-8. En el caso de querer migrar las cuentas manteniendo la clave de origen se debera ejecutar el siguiente comando en la carpeta de admt powershell admin:
+8. Instalar ADMT clasica con next next next, el unico punto a tener en cuenta es que la direccion del sql debe ser la siguiente **.\sqlexpress**.
+   La ubicacion de la instalacion es **C:\Windows\ADMT\**
+
+9. En el caso de querer migrar las cuentas manteniendo la clave de origen se debera ejecutar el siguiente comando en la carpeta de admt powershell admin:
 ```
 PS C:\Windows\admt> .\admt.exe key /option:create /sourcedomain:inke.local /keyfile:c:\FileMigPass.pes /keypassword:Pass@123
 ```
 
-9. Crear cuenta en dominio destino\adm-admt
-10. Agregar cuenta destino\adm-admt al grupo **Builtin\Administrators** del dominio origen
-11. Solucion al problema de migracion parcial como solucionar el problema de proxyaddress en ADMT. Con esta solucion se remueve la exclusion de los valores **mail** y **proxyaddresses** que no se migraban con ADMT.
+1. Crear cuenta en dominio destino\adm-admt que sea una copia del **Adminsitrator** de dominio.
+2.  Agregar cuenta destino\adm-admt al grupo **Builtin\Administrators** del dominio origen.
+3.  Solucion al problema de migracion parcial como solucionar el problema de proxyaddress en ADMT. Con esta solucion se remueve la exclusion de los valores **mail** y **proxyaddresses** que no se migraban con ADMT.
 
     11a. Create a new VBS script by coping the following info a Notepad document, then saving as ```DisplayExclusionList.vbs``` en C:\Temp
 
@@ -69,7 +72,7 @@ PS C:\Windows\admt> .\admt.exe key /option:create /sourcedomain:inke.local /keyf
     11d. Whilst this might look like a really long command, all I did was copy the output from the DisplayExclusionsList.vbs file, then input it at the end of the script.
     11e. Ref: https://blog.arkwright.com.au/2018/12/proxyaddress-attribute-doesnt-copy-when.html
 
-12. La instalacion de PES tiene que ser en un controlador de dominio destino y esta soportado un PES y un dominio por controlador de dominio.
+4.  La instalacion de PES tiene que ser en un controlador de dominio destino y esta soportado un PES y un dominio por controlador de dominio.
 
 Durante la instalacion de PES colocar los datos de origen\adm-admt y la password export key
 Si no se tiene acceso con la cuenta de ADMT al domain controller donde se instala PES se pueden ejecutar estos comandos para instalarlo con una cuenta Domain Admin en el controlador de dominio elegido:
