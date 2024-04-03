@@ -89,3 +89,26 @@ msiexec /i pwdmig.msi
 ](https://www.youtube.com/watch?time_continue=1892&v=wXsLjzpb9ZA&embeds_referring_euri=https%3A%2F%2Fvschamarti.wordpress.com%2F&source_ve_path=MTM5MTE3LDIzODUx&feature=emb_title)
 - [Interforest Migration with ADMT 3.2 – Part 3
 ](https://mcselles.wordpress.com/2016/02/22/interforest-migration-with-admt-3-2-part-3/)
+
+## Powershell scripts
+
+1. PS para obtener datos de cuenta en Active Directory
+```
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Prompt for the username
+$username = Read-Host -Prompt "Please enter the username"
+
+# Get the user details
+$user = Get-ADUser -Identity $username -Properties UserPrincipalName, ProxyAddresses, ObjectGUID, EmailAddress, SID, SIDHistory
+
+# Print the attributes in cyan
+Write-Host "UserPrincipalName: $($user.UserPrincipalName)" -ForegroundColor Green
+Write-Host "ProxyAddresses: $($user.ProxyAddresses)" -ForegroundColor DarkGreen
+Write-Host "ObjectGUID: $($user.ObjectGUID)" -ForegroundColor Green
+Write-Host "UPN: $($user.UserPrincipalName)" -ForegroundColor DarkGreen
+Write-Host "Email Addresses: $($user.EmailAddress)" -ForegroundColor DarkGreen
+Write-Host "SID: $($user.SID)" -ForegroundColor DarkGreen
+Write-Host "SIDHistory: $($user.SIDHistory)" -ForegroundColor DarkGreen
+```
