@@ -46,7 +46,7 @@ https://danteict.nl/2021/03/install-and-use-admt-3-2-on-windows-server-2019/
 7. Instalar SQL Express en el server de ADMNT, es necesario para la migracion.
 
 8. Instalar ADMT clasica con next next next, el unico punto a tener en cuenta es que la direccion del sql debe ser la siguiente **.\sqlexpress**.
-   La ubicacion de la instalacion es **C:\Windows\ADMT\**
+   La ubicacion de la instalacion es C:\Windows\ADMT\
 
 9. En el caso de querer migrar las cuentas manteniendo la clave de origen se debera ejecutar el siguiente comando en la carpeta de admt powershell admin:
 ```
@@ -58,7 +58,10 @@ PS C:\Windows\admt> .\admt.exe key /option:create /sourcedomain:inke.local /keyf
 3.  Solucion al problema de migracion parcial como solucionar el problema de proxyaddress en ADMT. Con esta solucion se remueve la exclusion de los valores **mail** y **proxyaddresses** que no se migraban con ADMT.
 
     11a. Create a new VBS script by coping the following info a Notepad document, then saving as ```DisplayExclusionList.vbs``` en C:\Temp
-
+    ```
+    Set o = CreateObject("ADMT.Migration")
+    WScript.Echo o.SystemPropertiesToExclude
+    ```
     11b. 2. Open an Administrative Command Prompt, navigate to **C:\Windows\SysWow64**, then run the the command
     ```
     cscript.exe C:\Temp\DisplayExclusionList.vbs
