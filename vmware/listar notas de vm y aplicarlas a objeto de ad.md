@@ -2,7 +2,7 @@
 Connect-VIServer -Server Your-vCenter-Server
 
 # Replace 'Your-VM-Name' with the name of your VM
-$vmName = "Your-VM-Name"
+$vmName = Read-Host 'Please enter your VM'
 
 # Retrieve VM notes
 $vm = Get-VM -Name $vmName
