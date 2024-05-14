@@ -9,8 +9,7 @@ phpipam:/opt/phpipam# tree
 │   ├── server.crt
 │   └── server.key
 ├── docker-compose.yml
-├── nginx.conf
-└── nginx.yml
+└── nginx.conf
 ```
 
 En la primera ejecucion se creara la base de datos por lo cual va a requerir las credenciales de mariadb:
