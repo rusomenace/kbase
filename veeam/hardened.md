@@ -353,11 +353,13 @@ Disk /dev/mapper/vg_veeam_u01-lv_veeam_u01: 20 TiB, 21990228361216 bytes, 429496
 ```
 ***Hay una advertencia que dice: The backup GPT table is not on the end of the device. y eso indica que el disco ha crecido pero necesita expandirse***
 
-5. Particionamos ejecutando el comando sudo ```parted /dev/mapper/mpatha```, al seleccionar la opcion P automaticamente nos indica que tenemos que corregir la particion GPT a su maximo y el resultado final son 22T anteriormente 20T
+5. Particionamos ejecutando el comando sudo ```parted /dev/mapper/mpatha``` 
+
+Al seleccionar la opcion P automaticamente nos indica que tenemos que corregir la particion GPT a su maximo y el resultado final son 22T anteriormente 20T
 ```
 sudo parted /dev/mapper/mpatha
 p (opcion)
-print free (se visualiza el espacio libre a asignar)
+se visualiza el espacio libre a asignar
 resizepart 1 100% (Aunque de error si se vuelve a ejecutar print free se ve como se expandio)
 ```
 6. Reiniciar el servidor
