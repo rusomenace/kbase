@@ -37,17 +37,27 @@ Get-VM | % { Get-View $_.id } | Select-Object Name,
 Modificar todas las VMs para que tengan auto update de Tools
 ```
 # Get all VMs with manual tools upgrade policy
-$ManualUpdateVMs = Get-VM | Get-View | Where-Object {$_.Config.Tools.ToolsUpgradePolicy -like "manual"} | Select-Object Name, @{N='ToolsUpgradePolicy';E={$_.Config.Tools.ToolsUpgradePolicy}}
+$ManualUpdateVMs = Get-VM | Get-View | Where-Object { $_.Config.Tools.ToolsUpgradePolicy -eq "manual" }
 
 # Loop through each VM and set the tools upgrade policy to UpgradeAtPowerCycle
 foreach ($VM in $ManualUpdateVMs) {
-    $VMConfig = Get-View -VIObject $VM
     $vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec
     $vmConfigSpec.Tools = New-Object VMware.Vim.ToolsConfigInfo
     $vmConfigSpec.Tools.ToolsUpgradePolicy = "UpgradeAtPowerCycle"
-    $VMConfig.ReconfigVM($vmConfigSpec)
+    
+    try {
+        $VM.ReconfigVM_Task($vmConfigSpec)
+        Write-Host "Successfully updated tools upgrade policy for VM: $($VM.Name)"
+    } catch {
+        Write-Error "Failed to update tools upgrade policy for VM: $($VM.Name). Error: $_"
+    }
 }
 
 # Verify the changes by listing the VMs and their ToolsUpgradePolicy
-Get-VM | Get-View | Select-Object Name, @{N='ToolsUpgradePolicy';E={$_.Config.Tools.ToolsUpgradePolicy}} | Sort-Object Name
+$UpdatedVMs = Get-VM | Get-View | Select-Object Name, @{N='ToolsUpgradePolicy';E={$_.Config.Tools.ToolsUpgradePolicy}} | Sort-Object Name
+
+$UpdatedVMs | ForEach-Object {
+    Write-Host "VM Name: $($_.Name), Tools Upgrade Policy: $($_.ToolsUpgradePolicy)"
+}
+
 ```
