@@ -9,6 +9,9 @@
 - Test externo de nivel de encripcion y vulnerabilidades
 [https://www.ssllabs.com/ssltest/index](https://www.ssllabs.com/ssltest/index)
 
+- SSL Chequer
+https://www.geocerts.com/ssl-checker
+
 ## Para deshabilitar el sitio por defecto comentar todo lo del siguiente archivo en NGinx
 ```
 /etc/nginx/sites-available/default
