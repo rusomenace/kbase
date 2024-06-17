@@ -16,3 +16,5 @@ https://www.geocerts.com/ssl-checker
 ```
 /etc/nginx/sites-available/default
 ```
+## Siio para analisis profundo
+https://intranet.bound4blue.com
