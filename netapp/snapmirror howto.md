@@ -2,8 +2,8 @@
 
 ## Definiciones
 
-- C1N1: Cabina de produccion donde residen los datos a respaldar.
-- C2N1: Cabina de DR o Mirror donde se copiaran los datos de respaldo.
+- **C1N1**: Cabina de produccion donde residen los datos a respaldar.
+- **C2N1**: Cabina de DR o Mirror donde se copiaran los datos de respaldo.
 
 ## 1. Network Setup
 
