@@ -56,10 +56,24 @@ La mejor práctica es la siguiente:
 - Segmento IP diferente a todos los conocidos.
 
 Estos comandos deben ejecutarse en ambas cabinas, tanto en C1N1 como en C2N1. Si tenemos un LACP, hay que crear una interfaz del tipo agregado `a0a-2000` donde `[2000]` representa la VLAN tagged de la interfaz. Una vez tenemos la interfaz, la podemos vincular con el siguiente comando:
+
+4.1 Creaciones de interfaces de LACP
+Esto aplica unicamente a interfaces de VLAN en LACP y tambien se encuentra explicado en el punto <span style="color: orange;">**8**</span> del confluence NetApp - Implementacion de cabina AFF desde cero
+```sh
+vlan create -node C1N1 -vlan-name a0a-2000
+```
+4.2 Crear el broadcast domain con una interfaz exclusiva sin LACP
 ```sh
 broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:e0d
 network port broadcast-domain show
 ```
+4.3 Crear el broadcast domain con una interfaz de VLAN de LACP
+```sh
+broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:a0a-2000
+network port broadcast-domain show
+```
+<span style="color: blue;">*ℹ️ **Informacion:**</span> Cuando los puertos son fisicos se deberan remover de ante mano del broadcast domain al que pertenecen. En el caso de las interfaces VLAN de LACP se crea un broadcast domain random al momento de crear la interfaz ejemplo a0a-2000.
+En el caso del LACP primero se debe remover el puerto de VLAN del broadcast domain y despues remover el broadcast domain.*
 
 ## 5. Creación de Interfaces de Cluster en ambas cabinas
 
