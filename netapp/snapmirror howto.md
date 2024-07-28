@@ -2,7 +2,7 @@
 
 ## 1. Network Setup
 
-En la cabina origen `C1N1` ya existen 2 SVM:
+En la cabina origen `C1N1` ya existen 2 SVM que son las de produccion, usamos sus nombres para crear las nuevas de mirror:
 
 - `SVM_CIFS`
 - `SVM_NFS`
