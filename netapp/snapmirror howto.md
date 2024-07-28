@@ -63,12 +63,12 @@ vlan create -node C1N1 -vlan-name a0a-2000
 ```
 4.2 Crear el broadcast domain con una interfaz exclusiva sin LACP
 ```sh
-broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:e0d
+broadcast-domain create -broadcast-domain intercluster -mtu 9000 -ports C2N1-01:e0d
 network port broadcast-domain show
 ```
 4.3 Crear el broadcast domain con una interfaz de VLAN de LACP
 ```sh
-broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:a0a-2000
+broadcast-domain create -broadcast-domain intercluster -mtu 9000 -ports C2N1-01:a0a-2000
 network port broadcast-domain show
 ```
 <span style="color: blue;">*ℹ️ **Informacion:**</span> Cuando los puertos son fisicos se deberan remover de ante mano del broadcast domain al que pertenecen. En el caso de las interfaces VLAN de LACP se crea un broadcast domain random al momento de crear la interfaz ejemplo a0a-2000.
