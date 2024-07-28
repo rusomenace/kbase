@@ -184,7 +184,7 @@ Info: [Job 121] 'vserver peer create' job queued
 
 En la cabina de destino `C2N1`, tenemos que aceptar el peering de las SVM, con este comando vemos el estado de `pending accept`:
 ```sh
-c2n1::> vserver peer show
+vserver peer show
 ```
 
 ```sh
@@ -198,15 +198,12 @@ svm_nfs_mir  SVM_NFS     pending      c1n1              snapmirror     SVM_NFS
 
 Tenemos que aceptar ambos requerimientos:
 ```sh
-c2n1::> vserver peer accept -vserver svm_cifs_mir -peer-vserver SVM_CIFS
+vserver peer accept -vserver svm_cifs_mir -peer-vserver SVM_CIFS
 ```
 
 ```sh
 Info: [Job 120] 'vserver peer accept' job queued
-``
-
-`
-
+```
 ```sh
 c2n1::> vserver peer accept -vserver svm_nfs_mir -peer-vserver SVM_NFS
 ```
