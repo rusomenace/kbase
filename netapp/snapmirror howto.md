@@ -58,7 +58,7 @@ La mejor práctica es la siguiente:
 Estos comandos deben ejecutarse en ambas cabinas, tanto en C1N1 como en C2N1. Si tenemos un LACP, hay que crear una interfaz del tipo agregado `a0a-2000` donde `[2000]` representa la VLAN tagged de la interfaz. Una vez tenemos la interfaz, la podemos vincular con el siguiente comando:
 
 4.1 Creaciones de interfaces de LACP
-Esto aplica unicamente a interfaces de VLAN en LACP y tambien se encuentra explicado en el punto <span style="color: orange;">**8**</span> del confluence NetApp - Implementacion de cabina AFF desde cero
+Esto aplica unicamente a interfaces de VLAN en LACP y tambien se encuentra explicado en el punto <span style="color: orange;">**8**</span> del confluence [NetApp - Implementacion de cabina AFF desde cero](https://contecnow.atlassian.net/wiki/spaces/AAA3A/pages/671219720/NetApp+-+Implementacion+de+cabina+AFF+desde+cero)
 ```sh
 vlan create -node C1N1 -vlan-name a0a-2000
 ```
