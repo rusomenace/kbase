@@ -12,7 +12,7 @@ En la cabina origen `C1N1` ya existen 2 SVM que son las de produccion, usamos su
 - `SVM_CIFS`
 - `SVM_NFS`
 
-## 2. Creación de SVM en la segunda cabina
+## 2. Creación de SVM en la cabina C2N1 (DR Mirror)
 
 Creamos en la segunda cabina las SVM equivalentes ya que siempre tiene que existir una equivalencia:
 
@@ -27,7 +27,7 @@ vserver create -vserver svm_cifs_mir -subtype default -rootvolume svm_cifs_mir_r
 vserver create -vserver svm_nfs_mir -subtype default -rootvolume svm_nfs_mir_root -rootvolume-security-style unix -language C.UTF-8 -snapshot-policy none -data-services data-nfs -foreground true
 ```
 
-## 3. Creación de Volúmenes en la cabina de destino
+## 3. Creación de Volúmenes en la cabina C2N1 (DR Mirror)
 
 Los volúmenes deben existir en destino (C2N1) con las mismas características que en el origen (C1N1). Comandos para crear los volúmenes donde se define el tamaño que debe ser igual al origen `[ -size {<integer>[KB|MB|GB|TB|PB]} ]`
 Es obligatorio que el type sea dp (data protection).
@@ -47,7 +47,7 @@ Los volúmenes tienen que ser DP (read only) y verificamos eso con el comando:
 volume show -vserver svm_cifs_mir (o la svm que corresponda)
 ```
 
-## 4. Configuración de Broadcast Domain
+## 4. Configuración de Broadcast Domain en ambas cabinas
 
 La mejor práctica es la siguiente:
 
@@ -61,7 +61,7 @@ broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:
 network port broadcast-domain show
 ```
 
-## 5. Creación de Interfaces de Cluster
+## 5. Creación de Interfaces de Cluster en ambas cabinas
 
 A continuación, creamos las interfaces (LIF) de cluster en ambas cabinas, C1N1 y C2N1. El `vserver` que seleccionamos en este comando no es alguno de los que hayamos creado, sino que es el `vserver` a nivel cluster y generalmente es el nombre del cluster. Las direcciones IP que usamos son las siguientes:
 
@@ -86,7 +86,7 @@ network ping -lif intercluster_01 -vserver C2N1 -destination 10.10.10.1
 
 Si el resultado es "is alive" es que hay conectividad.
 
-## 6. Configuración de LACP
+## 6. Configuración de LACP en ambas cabinas
 
 Si usamos LACP y compartimos puertos físicos, tenemos que limitar el ancho de banda de la siguiente manera en ambas cabinas:
 ```sh
