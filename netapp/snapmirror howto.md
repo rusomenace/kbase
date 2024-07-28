@@ -1,6 +1,3 @@
-Let's cover all 17 points you have and provide the raw Markdown format. Here is the complete document:
-
-```markdown
 # Configuración de Red
 
 ## 1. Network Setup
