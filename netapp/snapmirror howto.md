@@ -205,14 +205,14 @@ vserver peer accept -vserver svm_cifs_mir -peer-vserver SVM_CIFS
 Info: [Job 120] 'vserver peer accept' job queued
 ```
 ```sh
-c2n1::> vserver peer accept -vserver svm_nfs_mir -peer-vserver SVM_NFS
+vserver peer accept -vserver svm_nfs_mir -peer-vserver SVM_NFS
 ```
 
 ```sh
 Info: [Job 121] 'vserver peer accept' job queued
 ```
 
-Finalmente, verificamos que el vserver peering esté activo:
+Finalmente, verificamos que el vserver peering esté activo donde el state tiene que ser ```peered```:
 ```sh
 c2n1::> vserver peer show
 ```
