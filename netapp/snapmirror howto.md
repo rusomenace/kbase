@@ -25,7 +25,7 @@ vserver create -vserver svm_nfs_mir -subtype default -rootvolume svm_nfs_mir_roo
 ## 3. Creación de Volúmenes en la cabina de destino
 
 Los volúmenes deben existir en destino (C2N1) con las mismas características que en el origen (C1N1). Comandos para crear los volúmenes donde se define el tamaño que debe ser igual al origen `[ -size {<integer>[KB|MB|GB|TB|PB]} ]`
-Es obligatorio que el type se dp (data protection).
+Es obligatorio que el type sea dp (data protection).
 
 ### CIFS
 ```sh
@@ -58,7 +58,7 @@ network port broadcast-domain show
 
 ## 5. Creación de Interfaces de Cluster
 
-A continuación, creamos las interfaces de cluster en ambas cabinas, C1N1 y C2N1. El `vserver` que seleccionamos en este comando no es alguno de los que hayamos creado, sino que es el `vserver` a nivel cluster y generalmente es el nombre del cluster. Las direcciones IP que usamos son las siguientes:
+A continuación, creamos las interfaces (LIF) de cluster en ambas cabinas, C1N1 y C2N1. El `vserver` que seleccionamos en este comando no es alguno de los que hayamos creado, sino que es el `vserver` a nivel cluster y generalmente es el nombre del cluster. Las direcciones IP que usamos son las siguientes:
 
 - `10.10.10.1/24`: C1N1 [source]
 - `10.10.10.2/24`: C2N1 [destination]
@@ -74,9 +74,9 @@ network interface create -vserver c2n1 -lif intercluster_01 -service-policy defa
 
 Podemos verificar la conectividad con los siguientes comandos de ping:
 ```sh
-c1n1::> network ping -lif intercluster_01 -vserver c1n1 -destination 10.10.10.2
+network ping -lif intercluster_01 -vserver c1n1 -destination 10.10.10.2
 
-c2n1::> network ping -lif intercluster_01 -vserver c2n1 -destination 10.10.10.1
+network ping -lif intercluster_01 -vserver c2n1 -destination 10.10.10.1
 ```
 
 Si el resultado es "is alive" es que hay conectividad.
@@ -109,10 +109,10 @@ c2n1::> options -option-name replication.throttle.outgoing.max_kbs 12500
 
 ## 7. Cluster Peering
 
-En la cabina destino `C2N1`, la dirección `peer` es la IP de la cabina origen `C1N1`. Si tenemos más de una IP, después de la primera se pone una coma y se agregan las IPs adicionales. Se tiene que usar la misma clave cuando se ejecuta el mismo comando en la cabina origen.
+En la cabina destino `C2N1`, la dirección `peer` es la/s IP de la cabina origen `C1N1`. Si tenemos más de una IP, después de la primera se pone una coma y se agregan las IPs adicionales. Se tiene que usar la misma clave cuando se ejecuta el mismo comando en la cabina origen.
 
 ```sh
-c2n1::> cluster peer create -peer-addrs 10.10.10.1
+cluster peer create -peer-addrs 10.10.10.1
 ```
 
 ```sh
@@ -126,7 +126,7 @@ Confirm the passphrase:
 
 Ahora usamos el mismo comando en la cabina origen `C1N1`:
 ```sh
-c1n1::> cluster peer create -peer-addrs 10.10.10.2
+cluster peer create -peer-addrs 10.10.10.2
 ```
 
 ```sh
@@ -140,7 +140,7 @@ Confirm the passphrase:
 
 Verificamos el estado del cluster peer en ambas cabinas con el siguiente comando. El resultado tiene que ser el mismo en ambas y en el caso de `health` tiene que ser `true`:
 ```sh
-c1n1::> cluster peer show
+cluster peer show
 ```
 
 ```sh
@@ -150,7 +150,7 @@ c2n1                      1-80-000008           Available      ok
 ```
 
 ```sh
-c2n1::> cluster peer health show
+cluster peer health show
 ```
 
 ```sh
@@ -164,10 +164,10 @@ c2n1-01    c1n1                        c1n1-01
 
 ## 8. VServer Peering
 
-Una vez que tenemos el cluster peer montado, debemos crear el cluster peer de los vservers CIFS y NFS. El comando se ejecuta desde la cabina origen `C1N1`:
+Una vez que tenemos el cluster peer montado, debemos crear el peering de los vservers CIFS y NFS. El comando se ejecuta desde la cabina origen `C1N1`:
 
 ```sh
-c1n1::> vserver peer create -vserver SVM_CIFS -peer-vserver svm_cifs_mir -peer-cluster c2n1 -applications snapmirror
+vserver peer create -vserver SVM_CIFS -peer-vserver svm_cifs_mir -peer-cluster c2n1 -applications snapmirror
 ```
 
 ```sh
@@ -175,7 +175,7 @@ Info: [Job 120] 'vserver peer create' job queued
 ```
 
 ```sh
-c1n1::> vserver peer create -vserver SVM_NFS -peer-vserver svm_nfs_mir -peer-cluster c2n1 -applications snapmirror
+vserver peer create -vserver SVM_NFS -peer-vserver svm_nfs_mir -peer-cluster c2n1 -applications snapmirror
 ```
 
 ```sh
