@@ -24,7 +24,7 @@ vserver create -vserver svm_nfs_mir -subtype default -rootvolume svm_nfs_mir_roo
 
 ## 3. Creación de Volúmenes en la cabina de destino
 
-Los volúmenes deben existir en destino (C2N1) con las mismas características que en el origen (C1N1). Comandos para crear los volúmenes con auto growth thin provisioning. Estos comandos no tienen un tope de crecimiento pero se tienen que definir con la opción `[ -max-autosize {<integer>[KB|MB|GB|TB|PB]} ]`
+Los volúmenes deben existir en destino (C2N1) con las mismas características que en el origen (C1N1). Comandos para crear los volúmenes donde se define el tamaño que debe ser igual al origen `[ -size {<integer>[KB|MB|GB|TB|PB]} ]`
 
 ### CIFS
 ```sh
