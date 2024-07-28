@@ -1,5 +1,10 @@
 # Configuración de Red
 
+## Definiciones
+
+- C1N1: Cabina de produccion donde residen los datos a respaldar.
+- C2N1: Cabina de DR o Mirror donde se copiaran los datos de respaldo.
+
 ## 1. Network Setup
 
 En la cabina origen `C1N1` ya existen 2 SVM que son las de produccion, usamos sus nombres para crear las nuevas de mirror:
@@ -29,12 +34,12 @@ Es obligatorio que el type sea dp (data protection).
 
 ### CIFS
 ```sh
-volume create -vserver svm_cifs_mir -volume vol_cifs_01_mir -aggregate c2n1_01_FC_1 -size 10GB -type dp
+volume create -vserver svm_cifs_mir -volume vol_cifs_01_mir -aggregate C2N1_01_FC_1 -size 10GB -type dp
 ```
 
 ### NFS
 ```sh
-volume create -vserver svm_nfs_mir -volume ds_nfs_02_mir -aggregate c2n1_01_FC_1 -size 2GB -type dp
+volume create -vserver svm_nfs_mir -volume ds_nfs_02_mir -aggregate C2N1_01_FC_1 -size 2GB -type dp
 ```
 
 Los volúmenes tienen que ser DP (read only) y verificamos eso con el comando:
@@ -52,7 +57,7 @@ La mejor práctica es la siguiente:
 
 Estos comandos deben ejecutarse en ambas cabinas, tanto en C1N1 como en C2N1. Si tenemos un LACP, hay que crear una interfaz del tipo agregado `a0a-2000` donde `[2000]` representa la VLAN tagged de la interfaz. Una vez tenemos la interfaz, la podemos vincular con el siguiente comando:
 ```sh
-broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports c2n1-01:e0d
+broadcast-domain create -broadcast-domain intercluster -mtu 1500 -ports C2N1-01:e0d
 network port broadcast-domain show
 ```
 
@@ -67,16 +72,16 @@ Es ideal y buena práctica tener al menos 2 interfaces por cabina para tener red
 
 Comandos de creación de LIFs:
 ```sh
-network interface create -vserver c1n1 -lif intercluster_01 -service-policy default-intercluster -home-node c1n1-01 -home-port e0f -address 10.10.10.1 -netmask 255.255.255.0
+network interface create -vserver C1N1 -lif intercluster_01 -service-policy default-intercluster -home-node C1N1-01 -home-port e0f -address 10.10.10.1 -netmask 255.255.255.0
 
-network interface create -vserver c2n1 -lif intercluster_01 -service-policy default-intercluster -home-node c2n1-01 -home-port e0d -address 10.10.10.2 -netmask 255.255.255.0
+network interface create -vserver C2N1 -lif intercluster_01 -service-policy default-intercluster -home-node C2N1-01 -home-port e0d -address 10.10.10.2 -netmask 255.255.255.0
 ```
 
 Podemos verificar la conectividad con los siguientes comandos de ping:
 ```sh
-network ping -lif intercluster_01 -vserver c1n1 -destination 10.10.10.2
+network ping -lif intercluster_01 -vserver C1N1 -destination 10.10.10.2
 
-network ping -lif intercluster_01 -vserver c2n1 -destination 10.10.10.1
+network ping -lif intercluster_01 -vserver C2N1 -destination 10.10.10.1
 ```
 
 Si el resultado es "is alive" es que hay conectividad.
@@ -85,7 +90,7 @@ Si el resultado es "is alive" es que hay conectividad.
 
 Si usamos LACP y compartimos puertos físicos, tenemos que limitar el ancho de banda de la siguiente manera en ambas cabinas:
 ```sh
-c2n1::> options -option-name replication.throttle.enable on
+C2N1::> options -option-name replication.throttle.enable on
 ```
 
 El valor que ponemos a continuación en el siguiente comando está expresado en Kilobits por segundo y representa 100 Mbps:
@@ -104,7 +109,7 @@ El valor que ponemos a continuación en el siguiente comando está expresado en 
 ```
 
 ```sh
-c2n1::> options -option-name replication.throttle.outgoing.max_kbs 12500
+C2N1::> options -option-name replication.throttle.outgoing.max_kbs 12500
 ```
 
 ## 7. Cluster Peering
@@ -146,7 +151,7 @@ cluster peer show
 ```sh
 Peer Cluster Name         Cluster Serial Number Availability   Authentication
 ------------------------- --------------------- -------------- --------------
-c2n1                      1-80-000008           Available      ok
+C2N1                      1-80-000008           Available      ok
 ```
 
 ```sh
@@ -157,7 +162,7 @@ cluster peer health show
 Node       Cluster-Name                 Node-Name
            Ping-Status               RDB-Health Cluster-Health Availability
 ---------- --------------------------- --------- --------------- ------------
-c2n1-01    c1n1                        c1n1-01
+C2N1-01    C1N1                        C1N1-01
            Data: interface_reachable
            ICMP: -                   true      true            true
 ```
@@ -167,7 +172,7 @@ c2n1-01    c1n1                        c1n1-01
 Una vez que tenemos el cluster peer montado, debemos crear el peering de los vservers CIFS y NFS. El comando se ejecuta desde la cabina origen `C1N1`:
 
 ```sh
-vserver peer create -vserver SVM_CIFS -peer-vserver svm_cifs_mir -peer-cluster c2n1 -applications snapmirror
+vserver peer create -vserver SVM_CIFS -peer-vserver svm_cifs_mir -peer-cluster C2N1 -applications snapmirror
 ```
 
 ```sh
@@ -175,7 +180,7 @@ Info: [Job 120] 'vserver peer create' job queued
 ```
 
 ```sh
-vserver peer create -vserver SVM_NFS -peer-vserver svm_nfs_mir -peer-cluster c2n1 -applications snapmirror
+vserver peer create -vserver SVM_NFS -peer-vserver svm_nfs_mir -peer-cluster C2N1 -applications snapmirror
 ```
 
 ```sh
@@ -191,8 +196,8 @@ vserver peer show
 Peer        Peer                           Peering        Remote
 Vserver     Vserver     State        Peer Cluster      Applications   Vserver
 ----------- ----------- ------------ ----------------- -------------- ---------
-svm_cifs_mir SVM_CIFS    pending      c1n1              snapmirror     SVM_CIFS
-svm_nfs_mir  SVM_NFS     pending      c1n1              snapmirror     SVM_NFS
+svm_cifs_mir SVM_CIFS    pending      C1N1              snapmirror     SVM_CIFS
+svm_nfs_mir  SVM_NFS     pending      C1N1              snapmirror     SVM_NFS
 2 entries were displayed.
 ```
 
@@ -214,21 +219,22 @@ Info: [Job 121] 'vserver peer accept' job queued
 
 Finalmente, verificamos que el vserver peering esté activo donde el state tiene que ser ```peered```:
 ```sh
-c2n1::> vserver peer show
+vserver peer show
 ```
 
 ```sh
 Peer        Peer                           Peering        Remote
 Vserver     Vserver     State        Peer Cluster      Applications   Vserver
 ----------- ----------- ------------ ----------------- -------------- ---------
-svm_cifs_mir SVM_CIFS    peered      c1n1              snapmirror     SVM_CIFS
-svm_nfs_mir  SVM_NFS     peered      c1n1              snapmirror     SVM_NFS
+svm_cifs_mir SVM_CIFS    peered      C1N1              snapmirror     SVM_CIFS
+svm_nfs_mir  SVM_NFS     peered      C1N1              snapmirror     SVM_NFS
 2 entries were displayed.
 ```
 
 ## 9. Creación de los SnapMirror Relationships
 
-Finalmente, creamos el SnapMirror. Este comando se ejecuta en la cabina origen `C1N1` con los nombres de las SVM que se originan y los volúmenes que corresponden en cada SVM origen y destino:
+Este comando se ejecuta en la cabina origen `C1N1` con los nombres de las SVM que se originan y los volúmenes que corresponden en cada SVM origen y destino.
+Nuevamente, es importante definir el type como DP:
 
 ### CIFS
 ```sh
