@@ -103,7 +103,7 @@ Si el resultado es "is alive" es que hay conectividad.
 
 Si usamos LACP y compartimos puertos físicos, tenemos que limitar el ancho de banda de la siguiente manera en ambas cabinas:
 ```sh
-C2N1::> options -option-name replication.throttle.enable on
+options -option-name replication.throttle.enable on
 ```
 
 El valor que ponemos a continuación en el siguiente comando está expresado en Kilobits por segundo y representa 100 Mbps:
@@ -122,7 +122,7 @@ El valor que ponemos a continuación en el siguiente comando está expresado en 
 ```
 
 ```sh
-C2N1::> options -option-name replication.throttle.outgoing.max_kbs 12500
+options -option-name replication.throttle.outgoing.max_kbs 12500
 ```
 
 ## 7. Cluster Peering
