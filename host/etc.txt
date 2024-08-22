@@ -14,8 +14,6 @@
 
 # Contec
 192.168.77.206		vcenter.conteclab.local
-192.168.15.20		nrxvc002.neurax.neuraxpharm.de
-10.210.180.14		openlab.inke.local
 
 # B4B
 172.26.40.11		ipam.b4b.bound4blue.com
@@ -28,22 +26,24 @@
 10.210.150.13		esbcesxi03.inke.local
 10.211.150.11		esbcesxi04.inke.local
 10.211.150.12		esbcesxi05.inke.local
-192.168.15.20		nrxvc002.neurax.neuraxpharm.de
-10.2.1.88 			inkreplication
+
+# Neuraxpharm
+# Spain
+10.1.1.190		srvvcenter67.neuraxpharm.local
 # Germany
 192.168.15.22		nrxvh005.neurax.neuraxpharm.de
 192.168.15.21		nrxvh004.neurax.neuraxpharm.de
 192.168.10.8		nrxvh001.neurax.neuraxpharm.de
 192.168.15.23		nrxvh006.neurax.neuraxpharm.de
+192.168.15.20		nrxvc002.neurax.neuraxpharm.de
 
 # Espanasa
+# Spain
 172.16.100.1		esxmadrid01.espanasa.net
 172.16.100.2		esxmadrid02.espanasa.net
 172.16.100.3		esxmadrid03.espanasa.net
-
+# Portugual
 172.17.100.101		esxlisboa01.espanasa.net
 172.17.100.102		esxlisboa02.espanasa.net
 172.17.100.103		esxlisboa03.espanasa.net
 
-# Neuraxpharm
-10.1.1.190		srvvcenter67.neuraxpharm.local
