@@ -1,30 +1,7 @@
-# Copyright (c) 1993-2009 Microsoft Corp.
-#
-# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
-#
-# This file contains the mappings of IP addresses to host names. Each
-# entry should be kept on an individual line. The IP address should
-# be placed in the first column followed by the corresponding host name.
-# The IP address and the host name should be separated by at least one
-# space.
-#
-# Additionally, comments (such as these) may be inserted on individual
-# lines or following the machine name denoted by a '#' symbol.
-#
-# For example:
-#
-#      102.54.94.97     rhino.acme.com          # source server
-#       38.25.63.10     x.acme.com              # x client host
-
-# localhost name resolution is handled within DNS itself.
-#	127.0.0.1       localhost
-#	::1             localhost
-# Microsoft
-127.0.0.1			telemetry.microsoft.com
-127.0.0.1			data.microsoft.com
-127.0.0.1			settings-win.data.microsoft.com
-127.0.0.1			settings.data.microsoft.com
-
+# Hostlab
+192.168.77.201		dc.conteclab.local
+192.168.77.147		hometh
+192.168.77.213		c1n1.conteclab.local ofimatica.conteclab.local
 
 # SnagIT
 127.0.0.1			www.techsmith.com
@@ -35,75 +12,38 @@
 127.0.0.1			tsccloud.cloudapp.net
 127.0.0.1			assets.cloud.techsmith.com
 
-# VMWare 7
-# 10.1.1.9			tqarvcenter.tq.com.ar	tqarvcenter
-192.168.24.5		tqarhpvesxi01.tq.com.ar	tqarhpvesxi01
-192.168.24.6		tqarhpvesxi02.tq.com.ar	tqarhpvesxi02
-192.168.24.7		tqarhpvesxi03.tq.com.ar	tqarhpvesxi03
-192.168.24.8		tqarhpvesxi04.tq.com.ar	tqarhpvesxi04
-192.168.150.3		tqarhpvesxi05.tq.com.ar	tqarhpvesxi05
-192.168.24.10		tqarhpvesxi06.tq.com.ar	tqarhpvesxi06
-192.168.24.11		tqarhpvesxi07.tq.com.ar	tqarhpvesxi07
-192.168.24.12		tqarhpvesxi08.tq.com.ar	tqarhpvesxi08
+# Contec
+192.168.77.206		vcenter.conteclab.local
+192.168.15.20		nrxvc002.neurax.neuraxpharm.de
+10.210.180.14		openlab.inke.local
 
-# iLO
-192.168.29.5        esxi01ilo.tq.com.ar
-192.168.29.7        esxi03ilo.tq.com.ar
-192.168.29.8        esxi04ilo.tq.com.ar
-192.168.29.9        esxi06ilo.tq.com.ar
-192.168.29.10       esxi07ilo.tq.com.ar
-192.168.29.15       esxi08ilo.tq.com.ar
-192.168.29.19       bkp01ilo.tq.com.ar
-192.168.150.2       bkp02ilo.tq.com.ar
+# B4B
+172.26.40.11		ipam.b4b.bound4blue.com
 
-# iLOM
-192.168.29.17		tqoda0-ilom.tqcorp.com
-192.168.29.18		tqoda1-ilom.tqcorp.com
+# INKE
+10.210.150.254		vcenter.inke.local
+10.211.150.13		vcenterdr.inke.local
+10.210.150.11		esbcesxi01.inke.local
+10.210.150.12		esbcesxi02.inke.local
+10.210.150.13		esbcesxi03.inke.local
+10.211.150.11		esbcesxi04.inke.local
+10.211.150.12		esbcesxi05.inke.local
+192.168.15.20		nrxvc002.neurax.neuraxpharm.de
+10.2.1.88 			inkreplication
+# Germany
+192.168.15.22		nrxvh005.neurax.neuraxpharm.de
+192.168.15.21		nrxvh004.neurax.neuraxpharm.de
+192.168.10.8		nrxvh001.neurax.neuraxpharm.de
+192.168.15.23		nrxvh006.neurax.neuraxpharm.de
 
-# VeeamOne
-10.1.1.33			veeamone.tqcorp.com
+# Espanasa
+172.16.100.1		esxmadrid01.espanasa.net
+172.16.100.2		esxmadrid02.espanasa.net
+172.16.100.3		esxmadrid03.espanasa.net
 
-# Switching
-10.1.1.250          tqarswn304801.tqcorp.com
-10.1.1.251          tqarswn304802.tqcorp.com
+172.17.100.101		esxlisboa01.espanasa.net
+172.17.100.102		esxlisboa02.espanasa.net
+172.17.100.103		esxlisboa03.espanasa.net
 
-# SAN
-192.168.29.24       tqarfs5010.tq.com.ar
-
-# ODA
-192.168.29.17       odailom01.tqcorp.com
-192.168.29.18       odailom02.tqcorp.com
-
-# Fortigate
-10.1.1.254          tqarfw01.tqcorp.com
-10.1.1.253          tqarfw02.tqcorp.com
-192.168.150.254     tqarfw03.tqcorp.com
-
-# qnap
-10.1.1.55           qnap.tqcorp.com
-
-# Cloud Connect
-186.189.236.145		cc.tqcorp.com
-192.168.150.1		tqarsvw19bkp02
-
-# Skyline Health
-10.1.1.82           skyline.tqcorp.com skyline
-
-# Makro
-10.0.0.222		mkrovcenter01.mkro.local
-192.168.44.12	mkrovm12.mkro.local
-192.168.44.13	mkrovm13.mkro.local
-192.168.44.14	mkrovm14.mkro.local
-192.168.44.15	mkrovm15.mkro.local
-192.168.44.16	mkrovm16.mkro.local
-192.168.44.17	mkrovm17.mkro.local
-192.168.44.18	mkrovm18.mkro.local
-192.168.44.19	mkrovm19.mkro.local
-192.168.44.20	mkrovm20.mkro.local
-10.0.0.1		mkro_fortigate01.infrar.com.ar
-10.0.0.254		mkro_fortigate02.infrar.com.ar
-10.0.0.239		smg.infrar.com.ar
-10.0.0.219		vw.infrar.com.ar
-10.0.0.218		netbox.infrar.com.ar
-
-# Labs
+# Neuraxpharm
+10.1.1.190		srvvcenter67.neuraxpharm.local
