@@ -1,0 +1,1 @@
+https://awakecoding.com/posts/mac-rdp-client-kerberos-and-protected-users-guide/
