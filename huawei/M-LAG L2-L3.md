@@ -61,7 +61,6 @@ vlan batch 4 100 140 150 to 151 160 170 180 190 230 240
 ### Port trunk para enlazar ambos switches
 
 Se crea un port channel para el Peer-Link
-
 Se deben utilizar las intefaces de SQFP+ de 100Gbps
 ```
 interface Eth-Trunk1
