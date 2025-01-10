@@ -3,8 +3,15 @@
 - El Stack por M-LAG requiere gestionar cada switch de manera independiente. Esto significa que cada configuración realizada en un switch debe replicarse en el otro. En algunos casos, la configuración es idéntica; en otros, cambia ligeramente dependiendo de lo que se esté configurando.
 - El M-LAG utiliza el grupo DFS (DFS Group) para enlazar las configuraciones entre los switches. Esto se refleja en los Eth-Trunk, cada uno de los cuales lleva un `dfs-group 1 m-lag 1,2,3,...` y debe ser igual en ambos switches, además de ser único para cada Trunk.
 
+### Configuraciones generales
+```
+sysname SWITCHNAME
+clock timezone UTC add 01:00:00
+stp bridge-address 00e0-fc12-3458
+stp instance 0 root primary
+ipv4-family
+```
 Se crea un port channel para el Heartbeat, con la IP `.2` para el Switch 1 y la IP `.3` para el Switch 2.
-
 La recomendación de Huawei es usar las interfaces MEth para el heartbeat, pero en este caso se creó un `PO0` de 10 GB para tal fin:
 ### SW01
 ```
@@ -21,10 +28,6 @@ undo portswitch
 description M-LAG_Heartbeat
 ip address 10.254.120.3 255.255.255.0
 m-lag unpaired-port reserved
-```
-### Zona Horaria (Madrid-Barcelona)
-```
-clock timezone UTC add 01:00:00
 ```
 ## Configuración del Grupo DFS para M-LAG
 El Switch 2 tiene la misma configuración que el Switch 1, pero con una prioridad de 120. Se crea un grupo DFS; en este ejemplo, la IP .2 corresponde al Switch 1 y la IP .3 al Switch 2. Al configurar el Switch 2, se deben invertir las IPs.
