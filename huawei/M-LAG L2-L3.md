@@ -18,7 +18,8 @@ stp tc-protection
 ```
 Se crea un port channel para el Heartbeat, con la IP `.2` para el Switch 1 y la IP `.3` para el Switch 2.
 La recomendación de Huawei es usar las interfaces MEth para el heartbeat, pero en este caso se creó un `PO0` de 10 GB para tal fin:
-### SW01
+
+SW01
 ```
 interface Eth-Trunk0
 undo portswitch
@@ -26,7 +27,7 @@ description M-LAG_Heartbeat
 ip address 10.254.120.2 255.255.255.0
 m-lag unpaired-port reserved
 ```
-### SW02
+SW02
 ```
 interface Eth-Trunk0
 undo portswitch
