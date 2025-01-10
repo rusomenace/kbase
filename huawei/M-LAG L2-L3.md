@@ -22,9 +22,6 @@ description M-LAG_Heartbeat
 ip address 10.254.120.3 255.255.255.0
 m-lag unpaired-port reserved
 ```
-
-# Configuracion General
-
 ### Zona Horaria (Madrid-Barcelona)
 ```
 clock timezone UTC add 01:00:00
