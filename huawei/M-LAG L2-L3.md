@@ -29,10 +29,9 @@ m-lag unpaired-port reserved
 ```
 clock timezone UTC add 01:00:00
 ```
-Creacion de grupo de DFS para M-LAG, el switch 2 lleva la misma configuracion que el 1 pero tiene prioridad 120
-Se crea un grupo DFS, en el ejemplo la IP .2 corresponde al switch 1 y la IP .3 al switch 2, se debe invertir las IPs al configurar el switch 2
-
-La priorida del switch 1 es 150 y la del switch 2 es 120
+## Configuración del Grupo DFS para M-LAG
+El Switch 2 tiene la misma configuración que el Switch 1, pero con una prioridad de 120. Se crea un grupo DFS; en este ejemplo, la IP .2 corresponde al Switch 1 y la IP .3 al Switch 2. Al configurar el Switch 2, se deben invertir las IPs.
+La prioridad del Switch 1 es 150, y la del Switch 2 es 120:
 ```
 dfs-group 1
 authentication-mode hmac-sha256 password ClaveSuperFuerte
