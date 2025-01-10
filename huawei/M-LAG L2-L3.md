@@ -58,12 +58,6 @@ ntp unicast-server 10.210.160.11
 ```
 vlan batch 4 100 140 150 to 151 160 170 180 190 230 240
 ```
-### Configuraciones de STP en ambos switches de M-LAG L2
-```
-stp bridge-address 00e0-fc12-3458
-stp instance 0 root primary
-ipv4-family
-```
 ### Port trunk para enlazar ambos switches
 
 Se crea un port channel para el Peer-Link
