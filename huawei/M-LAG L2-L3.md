@@ -50,7 +50,7 @@ priority 120
 ntp unicast-peer 10.210.160.11
 ntp unicast-server 10.210.160.11
 ```
-### Creacionistas de VLANs
+### Creacion de VLANs
 ```
 vlan batch 4 100 140 150 to 151 160 170 180 190 230 240
 ```
