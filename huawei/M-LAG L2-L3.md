@@ -10,6 +10,10 @@ clock timezone UTC add 01:00:00
 stp bridge-address 00e0-fc12-3458
 stp instance 0 root primary
 ipv4-family
+stp mode rstp
+stp v-stp enable
+stp bpdu-protection
+stp tc-protection
 ```
 Se crea un port channel para el Heartbeat, con la IP `.2` para el Switch 1 y la IP `.3` para el Switch 2.
 La recomendación de Huawei es usar las interfaces MEth para el heartbeat, pero en este caso se creó un `PO0` de 10 GB para tal fin:
@@ -68,15 +72,6 @@ description M-LAG_Peering
 stp disable
 mode lacp-static
 peer-link 1
-```
-Comandos adicionales a ejecutar en system-view (la mac address no es real, se usa una creada que comparten los 2 switches)
-```
-stp bridge-address 00e0-fc12-3458
-stp mode rstp
-stp v-stp enable
-stp instance 0 root primary
-stp bpdu-protection
-stp tc-protection
 ```
 Ejemplo de un LAG clasico sin LACP con switches fortinet
 
