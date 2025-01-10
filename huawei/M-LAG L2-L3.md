@@ -1,5 +1,6 @@
-# Notas Importantes
+# M-LAG
 
+### Importante!
 - El Stack por M-LAG requiere gestionar cada switch de manera independiente. Esto significa que cada configuración realizada en un switch debe replicarse en el otro. En algunos casos, la configuración es idéntica; en otros, cambia ligeramente dependiendo de lo que se esté configurando.
 - El M-LAG utiliza el grupo DFS (DFS Group) para enlazar las configuraciones entre los switches. Esto se refleja en los Eth-Trunk, cada uno de los cuales lleva un `dfs-group 1 m-lag 1,2,3,...` y debe ser igual en ambos switches, además de ser único para cada Trunk.
 
