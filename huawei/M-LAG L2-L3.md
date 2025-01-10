@@ -29,12 +29,21 @@ clock timezone UTC add 01:00:00
 ## Configuración del Grupo DFS para M-LAG
 El Switch 2 tiene la misma configuración que el Switch 1, pero con una prioridad de 120. Se crea un grupo DFS; en este ejemplo, la IP .2 corresponde al Switch 1 y la IP .3 al Switch 2. Al configurar el Switch 2, se deben invertir las IPs.
 La prioridad del Switch 1 es 150, y la del Switch 2 es 120:
+SW01
 ```
 dfs-group 1
 authentication-mode hmac-sha256 password ClaveSuperFuerte
 dual-active detection source ip 10.254.120.2 peer 10.254.120.3
 m-lag up-delay 240 auto-recovery interval 10
 priority 150
+```
+SW02
+```
+dfs-group 1
+authentication-mode hmac-sha256 password ClaveSuperFuerte
+dual-active detection source ip 10.254.120.1 peer 10.254.120.2
+m-lag up-delay 240 auto-recovery interval 10
+priority 120
 ```
 ### Configuracion de NTP apuntado al Domain Controller
 ```
