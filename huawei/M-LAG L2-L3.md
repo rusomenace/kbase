@@ -72,6 +72,8 @@ description M-LAG_Peering
 stp disable
 mode lacp-static
 peer-link 1
+trunkport 100ge 1/0/3
+trunkport 100ge 1/0/4
 ```
 Ejemplo de un LAG clasico sin LACP con switches fortinet
 
